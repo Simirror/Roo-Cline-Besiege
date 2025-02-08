@@ -13,7 +13,7 @@ import { ModelInfoView, normalizeApiConfiguration } from "./ApiOptions"
 
 const GlamaModelPicker: React.FC = () => {
 	const { apiConfiguration, setApiConfiguration, glamaModels, onUpdateApiConfig } = useExtensionState()
-	const [searchTerm, setSearchTerm] = useState(apiConfiguration?.glamaModelId || glamaDefaultModelId)
+	const [searchTerm, setSearchTerm] = useState(apiConfiguration?.ctyunModelId || glamaDefaultModelId)
 	const [isDropdownVisible, setIsDropdownVisible] = useState(false)
 	const [selectedIndex, setSelectedIndex] = useState(-1)
 	const dropdownRef = useRef<HTMLDivElement>(null)
@@ -25,7 +25,7 @@ const GlamaModelPicker: React.FC = () => {
 		// could be setting invalid model id/undefined info but validation will catch it
 		const apiConfig = {
 			...apiConfiguration,
-			glamaModelId: newModelId,
+			ctyunModelId: newModelId,
 			glamaModelInfo: glamaModels[newModelId],
 		}
 		setApiConfiguration(apiConfig)
@@ -39,8 +39,8 @@ const GlamaModelPicker: React.FC = () => {
 	}, [apiConfiguration])
 
 	useEffect(() => {
-		if (apiConfiguration?.glamaModelId && apiConfiguration?.glamaModelId !== searchTerm) {
-			setSearchTerm(apiConfiguration?.glamaModelId)
+		if (apiConfiguration?.ctyunModelId && apiConfiguration?.ctyunModelId !== searchTerm) {
+			setSearchTerm(apiConfiguration?.ctyunModelId)
 		}
 	}, [apiConfiguration, searchTerm])
 

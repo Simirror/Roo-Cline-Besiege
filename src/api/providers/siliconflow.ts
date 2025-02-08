@@ -1,55 +1,40 @@
-import { Anthropic } from "@anthropic-ai/sdk"
-import OpenAI, { AzureOpenAI } from "openai"
-
-import {
-	ApiHandlerOptions,
-	azureOpenAiDefaultApiVersion,
-	ModelInfo,
-	openAiModelInfoSaneDefaults,
-} from "../../shared/api"
-import { ApiHandler, SingleCompletionHandler } from "../index"
+import { OpenAiHandler } from "./openai"
+import { ApiHandlerOptions, ModelInfo, siliconflowDefaultModelId, siliconflowModels } from "../../shared/api"
+import { deepSeekModels, deepSeekDefaultModelId } from "../../shared/api"
+import Anthropic from "@anthropic-ai/sdk"
+import OpenAI from "openai"
 import { convertToOpenAiMessages } from "../transform/openai-format"
 import { convertToR1Format } from "../transform/r1-format"
 import { ApiStream } from "../transform/stream"
 
-export class OpenAiHandler implements ApiHandler, SingleCompletionHandler {
-	protected options: ApiHandlerOptions
-	protected client: OpenAI
-
+export class SiliconflowHandler extends OpenAiHandler {
 	constructor(options: ApiHandlerOptions) {
-		this.options = options
-
-		let urlHost: string
-
-		try {
-			urlHost = new URL(this.options.openAiBaseUrl ?? "").host
-		} catch (error) {
-			// Likely an invalid `openAiBaseUrl`; we're still working on
-			// proper settings validation.
-			urlHost = ""
+		if (!options.deepSeekApiKey) {
+			throw new Error("DeepSeek API key is required. Please provide it in the settings.")
 		}
-
-		if (urlHost === "azure.com" || urlHost.endsWith(".azure.com") || options.openAiUseAzure) {
-			// Azure API shape slightly differs from the core API shape:
-			// https://github.com/openai/openai-node?tab=readme-ov-file#microsoft-azure-openai
-			this.client = new AzureOpenAI({
-				baseURL: this.options.openAiBaseUrl,
-				apiKey: this.options.openAiApiKey,
-				apiVersion: this.options.azureApiVersion || azureOpenAiDefaultApiVersion,
-			})
-		} else {
-			this.client = new OpenAI({
-				baseURL: this.options.openAiBaseUrl,
-				apiKey: this.options.openAiApiKey,
-			})
-		}
+		super({
+			...options,
+			openAiApiKey: options.siliconflowApiKey,
+			openAiModelId: options.siliconflowModelId ?? siliconflowDefaultModelId,
+			openAiBaseUrl: options.deepSeekBaseUrl ?? "https://api.siliconflow.cn/v1",
+			openAiStreamingEnabled: true,
+			includeMaxTokens: true,
+		})
 	}
 
-	async *createMessage(systemPrompt: string, messages: Anthropic.Messages.MessageParam[]): ApiStream {
+	override getModel(): { id: string; info: ModelInfo } {
+		const modelId = this.options.apiModelId ?? siliconflowDefaultModelId
+		return {
+			id: modelId,
+			info:
+				siliconflowModels[modelId as keyof typeof siliconflowModels] ||
+				siliconflowModels[siliconflowDefaultModelId],
+		}
+	}
+	override async *createMessage(systemPrompt: string, messages: Anthropic.Messages.MessageParam[]): ApiStream {
 		const modelInfo = this.getModel().info
-		const modelId = this.options.openAiModelId ?? ""
-
-		const deepseekReasoner = modelId.includes("deepseek-reasoner")
+		const modelId = this.options.apiModelId ?? ""
+		const deepseekReasoner = modelId.includes("deepseek-reasoner") || modelId.includes("DeepSeek-R1")
 
 		if (this.options.openAiStreamingEnabled ?? true) {
 			const systemMessage: OpenAI.Chat.ChatCompletionSystemMessageParam = {
@@ -58,7 +43,7 @@ export class OpenAiHandler implements ApiHandler, SingleCompletionHandler {
 			}
 			const requestOptions: OpenAI.Chat.Completions.ChatCompletionCreateParamsStreaming = {
 				model: modelId,
-				temperature: 0,
+				//temperature: 0.1,
 				messages: deepseekReasoner
 					? convertToR1Format([{ role: "user", content: systemPrompt }, ...messages])
 					: [systemMessage, ...convertToOpenAiMessages(messages)],
@@ -120,30 +105,6 @@ export class OpenAiHandler implements ApiHandler, SingleCompletionHandler {
 				inputTokens: response.usage?.prompt_tokens || 0,
 				outputTokens: response.usage?.completion_tokens || 0,
 			}
-		}
-	}
-
-	getModel(): { id: string; info: ModelInfo } {
-		return {
-			id: this.options.openAiModelId ?? "",
-			info: this.options.openAiCustomModelInfo ?? openAiModelInfoSaneDefaults,
-		}
-	}
-
-	async completePrompt(prompt: string): Promise<string> {
-		try {
-			const requestOptions: OpenAI.Chat.Completions.ChatCompletionCreateParamsNonStreaming = {
-				model: this.getModel().id,
-				messages: [{ role: "user", content: prompt }],
-			}
-
-			const response = await this.client.chat.completions.create(requestOptions)
-			return response.choices[0]?.message.content || ""
-		} catch (error) {
-			if (error instanceof Error) {
-				throw new Error(`OpenAI completion error: ${error.message}`)
-			}
-			throw error
 		}
 	}
 }

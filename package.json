@@ -1,10 +1,10 @@
 {
-	"name": "roo-cline",
-	"displayName": "Roo Code (prev. Roo Cline)",
-	"description": "A VS Code plugin that enhances coding with AI-powered automation, multi-model support, and experimental features.",
-	"publisher": "RooVeterinaryInc",
-	"version": "3.3.14",
-	"icon": "assets/icons/rocket.png",
+	"name": "roo-cline-besiege",
+	"displayName": "Roo Code Besiege ",
+	"description": "roo-cline-besiege is a fork from Roo-cline, it fix some question and del some where cant connect serve provider.",
+	"publisher": "felikspeegel",
+	"version": "0.0.1",
+	"icon": "assets/icons/coffee.png",
 	"galleryBanner": {
 		"color": "#617A91",
 		"theme": "dark"
@@ -13,13 +13,13 @@
 		"vscode": "^1.84.0"
 	},
 	"author": {
-		"name": "Roo Vet"
+		"name": "Feliks peegel"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/RooVetGit/Roo-Code"
+		"url": "https://github.com/Simirror/roo-cline-besiege"
 	},
-	"homepage": "https://github.com/RooVetGit/Roo-Code",
+	"homepage": "https://github.com/Simirror/roo-cline-besiege",
 	"categories": [
 		"AI",
 		"Chat",
@@ -41,7 +41,7 @@
 		"sonnet",
 		"ai",
 		"llama",
-		"roo code",
+		"Roo Code Besiege",
 		"roocode"
 	],
 	"activationEvents": [
@@ -53,185 +53,185 @@
 		"viewsContainers": {
 			"activitybar": [
 				{
-					"id": "roo-cline-ActivityBar",
-					"title": "Roo Code",
-					"icon": "$(rocket)"
+					"id": "roo-cline-besiege-ActivityBar",
+					"title": "Roo Code Besiege",
+					"icon": "$(coffee)"
 				}
 			]
 		},
 		"views": {
-			"roo-cline-ActivityBar": [
+			"roo-cline-besiege-ActivityBar": [
 				{
 					"type": "webview",
-					"id": "roo-cline.SidebarProvider",
+					"id": "roo-cline-besiege.SidebarProvider",
 					"name": ""
 				}
 			]
 		},
 		"commands": [
 			{
-				"command": "roo-cline.plusButtonClicked",
+				"command": "roo-cline-besiege.plusButtonClicked",
 				"title": "New Task",
 				"icon": "$(add)"
 			},
 			{
-				"command": "roo-cline.mcpButtonClicked",
+				"command": "roo-cline-besiege.mcpButtonClicked",
 				"title": "MCP Servers",
 				"icon": "$(server)"
 			},
 			{
-				"command": "roo-cline.promptsButtonClicked",
+				"command": "roo-cline-besiege.promptsButtonClicked",
 				"title": "Prompts",
 				"icon": "$(notebook)"
 			},
 			{
-				"command": "roo-cline.historyButtonClicked",
+				"command": "roo-cline-besiege.historyButtonClicked",
 				"title": "History",
 				"icon": "$(history)"
 			},
 			{
-				"command": "roo-cline.popoutButtonClicked",
+				"command": "roo-cline-besiege.popoutButtonClicked",
 				"title": "Open in Editor",
 				"icon": "$(link-external)"
 			},
 			{
-				"command": "roo-cline.settingsButtonClicked",
+				"command": "roo-cline-besiege.settingsButtonClicked",
 				"title": "Settings",
 				"icon": "$(settings-gear)"
 			},
 			{
-				"command": "roo-cline.openInNewTab",
+				"command": "roo-cline-besiege.openInNewTab",
 				"title": "Open In New Tab",
-				"category": "Roo Code"
+				"category": "Roo Code Besiege"
 			},
 			{
-				"command": "roo-cline.explainCode",
-				"title": "Roo Code: Explain Code",
-				"category": "Roo Code"
+				"command": "roo-cline-besiege.explainCode",
+				"title": "Roo Code Besiege: Explain Code",
+				"category": "Roo Code Besiege"
 			},
 			{
-				"command": "roo-cline.fixCode",
-				"title": "Roo Code: Fix Code",
-				"category": "Roo Code"
+				"command": "roo-cline-besiege.fixCode",
+				"title": "Roo Code Besiege: Fix Code",
+				"category": "Roo Code Besiege"
 			},
 			{
-				"command": "roo-cline.improveCode",
-				"title": "Roo Code: Improve Code",
-				"category": "Roo Code"
+				"command": "roo-cline-besiege.improveCode",
+				"title": "Roo Code Besiege: Improve Code",
+				"category": "Roo Code Besiege"
 			},
 			{
-				"command": "roo-cline.addToContext",
-				"title": "Roo Code: Add To Context",
-				"category": "Roo Code"
+				"command": "roo-cline-besiege.addToContext",
+				"title": "Roo Code Besiege: Add To Context",
+				"category": "Roo Code Besiege"
 			},
 			{
-				"command": "roo-cline.terminalAddToContext",
-				"title": "Roo Code: Add Terminal Content to Context",
+				"command": "roo-cline-besiege.terminalAddToContext",
+				"title": "Roo Code Besiege: Add Terminal Content to Context",
 				"category": "Terminal"
 			},
 			{
-				"command": "roo-cline.terminalFixCommand",
-				"title": "Roo Code: Fix This Command",
+				"command": "roo-cline-besiege.terminalFixCommand",
+				"title": "Roo Code Besiege: Fix This Command",
 				"category": "Terminal"
 			},
 			{
-				"command": "roo-cline.terminalExplainCommand",
-				"title": "Roo Code: Explain This Command",
+				"command": "roo-cline-besiege.terminalExplainCommand",
+				"title": "Roo Code Besiege: Explain This Command",
 				"category": "Terminal"
 			},
 			{
-				"command": "roo-cline.terminalFixCommandInCurrentTask",
-				"title": "Roo Code: Fix This Command (Current Task)",
+				"command": "roo-cline-besiege.terminalFixCommandInCurrentTask",
+				"title": "Roo Code Besiege: Fix This Command (Current Task)",
 				"category": "Terminal"
 			},
 			{
-				"command": "roo-cline.terminalExplainCommandInCurrentTask",
-				"title": "Roo Code: Explain This Command (Current Task)",
+				"command": "roo-cline-besiege.terminalExplainCommandInCurrentTask",
+				"title": "Roo Code Besiege: Explain This Command (Current Task)",
 				"category": "Terminal"
 			}
 		],
 		"menus": {
 			"editor/context": [
 				{
-					"command": "roo-cline.explainCode",
+					"command": "roo-cline-besiege.explainCode",
 					"when": "editorHasSelection",
-					"group": "Roo Code@1"
+					"group": "Roo Code Besiege@1"
 				},
 				{
-					"command": "roo-cline.fixCode",
+					"command": "roo-cline-besiege.fixCode",
 					"when": "editorHasSelection",
-					"group": "Roo Code@2"
+					"group": "Roo Code Besiege@2"
 				},
 				{
-					"command": "roo-cline.improveCode",
+					"command": "roo-cline-besiege.improveCode",
 					"when": "editorHasSelection",
-					"group": "Roo Code@3"
+					"group": "Roo Code Besiege@3"
 				},
 				{
-					"command": "roo-cline.addToContext",
+					"command": "roo-cline-besiege.addToContext",
 					"when": "editorHasSelection",
-					"group": "Roo Code@4"
+					"group": "Roo Code Besiege@4"
 				}
 			],
 			"terminal/context": [
 				{
-					"command": "roo-cline.terminalAddToContext",
-					"group": "Roo Code@1"
+					"command": "roo-cline-besiege.terminalAddToContext",
+					"group": "Roo Code Besiege@1"
 				},
 				{
-					"command": "roo-cline.terminalFixCommand",
-					"group": "Roo Code@2"
+					"command": "roo-cline-besiege.terminalFixCommand",
+					"group": "Roo Code Besiege@2"
 				},
 				{
-					"command": "roo-cline.terminalExplainCommand",
-					"group": "Roo Code@3"
+					"command": "roo-cline-besiege.terminalExplainCommand",
+					"group": "Roo Code Besiege@3"
 				},
 				{
-					"command": "roo-cline.terminalFixCommandInCurrentTask",
-					"group": "Roo Code@5"
+					"command": "roo-cline-besiege.terminalFixCommandInCurrentTask",
+					"group": "Roo Code Besiege@5"
 				},
 				{
-					"command": "roo-cline.terminalExplainCommandInCurrentTask",
-					"group": "Roo Code@6"
+					"command": "roo-cline-besiege.terminalExplainCommandInCurrentTask",
+					"group": "Roo Code Besiege@6"
 				}
 			],
 			"view/title": [
 				{
-					"command": "roo-cline.plusButtonClicked",
+					"command": "roo-cline-besiege.plusButtonClicked",
 					"group": "navigation@1",
-					"when": "view == roo-cline.SidebarProvider"
+					"when": "view == roo-cline-besiege.SidebarProvider"
 				},
 				{
-					"command": "roo-cline.promptsButtonClicked",
+					"command": "roo-cline-besiege.promptsButtonClicked",
 					"group": "navigation@2",
-					"when": "view == roo-cline.SidebarProvider"
+					"when": "view == roo-cline-besiege.SidebarProvider"
 				},
 				{
-					"command": "roo-cline.mcpButtonClicked",
+					"command": "roo-cline-besiege.mcpButtonClicked",
 					"group": "navigation@3",
-					"when": "view == roo-cline.SidebarProvider"
+					"when": "view == roo-cline-besiege.SidebarProvider"
 				},
 				{
-					"command": "roo-cline.historyButtonClicked",
+					"command": "roo-cline-besiege.historyButtonClicked",
 					"group": "navigation@4",
-					"when": "view == roo-cline.SidebarProvider"
+					"when": "view == roo-cline-besiege.SidebarProvider"
 				},
 				{
-					"command": "roo-cline.popoutButtonClicked",
+					"command": "roo-cline-besiege.popoutButtonClicked",
 					"group": "navigation@5",
-					"when": "view == roo-cline.SidebarProvider"
+					"when": "view == roo-cline-besiege.SidebarProvider"
 				},
 				{
-					"command": "roo-cline.settingsButtonClicked",
+					"command": "roo-cline-besiege.settingsButtonClicked",
 					"group": "navigation@6",
-					"when": "view == roo-cline.SidebarProvider"
+					"when": "view == roo-cline-besiege.SidebarProvider"
 				}
 			]
 		},
 		"configuration": {
-			"title": "Roo Code",
+			"title": "Roo Code Besiege",
 			"properties": {
-				"roo-cline.allowedCommands": {
+				"roo-cline-besiege.allowedCommands": {
 					"type": "array",
 					"items": {
 						"type": "string"
@@ -246,7 +246,7 @@
 					],
 					"description": "Commands that can be auto-executed when 'Always approve execute operations' is enabled"
 				},
-				"roo-cline.vsCodeLmModelSelector": {
+				"roo-cline-besiege.vsCodeLmModelSelector": {
 					"type": "object",
 					"properties": {
 						"vendor": {
@@ -297,11 +297,13 @@
 		"@google/generative-ai": "^0.18.0",
 		"@mistralai/mistralai": "^1.3.6",
 		"@modelcontextprotocol/sdk": "^1.0.1",
+		"@tailwindcss/vite": "^4.0.4",
 		"@types/clone-deep": "^4.0.4",
 		"@types/pdf-parse": "^1.1.4",
 		"@types/tmp": "^0.2.6",
 		"@types/turndown": "^5.0.5",
 		"@types/vscode": "^1.95.0",
+		"@vitejs/plugin-react": "^4.3.4",
 		"@vscode/codicons": "^0.0.36",
 		"axios": "^1.7.4",
 		"cheerio": "^1.0.0",
@@ -358,7 +360,8 @@
 		"npm-run-all": "^4.1.5",
 		"prettier": "^3.4.2",
 		"ts-jest": "^29.2.5",
-		"typescript": "^5.4.5"
+		"typescript": "^5.7.3",
+		"vite": "^6.1.0"
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx,json,css,md}": [

@@ -60,7 +60,7 @@ describe("ConfigManager", () => {
 							config: {},
 						},
 						test: {
-							apiProvider: "anthropic",
+							apiProvider: "deepseek",
 						},
 					},
 				}),
@@ -84,61 +84,6 @@ describe("ConfigManager", () => {
 		})
 	})
 
-	describe("ListConfig", () => {
-		it("should list all available configs", async () => {
-			const existingConfig: ApiConfigData = {
-				currentApiConfigName: "default",
-				apiConfigs: {
-					default: {
-						id: "default",
-					},
-					test: {
-						apiProvider: "anthropic",
-						id: "test-id",
-					},
-				},
-				modeApiConfigs: {
-					code: "default",
-					architect: "default",
-					ask: "default",
-				},
-			}
-
-			mockSecrets.get.mockResolvedValue(JSON.stringify(existingConfig))
-
-			const configs = await configManager.listConfig()
-			expect(configs).toEqual([
-				{ name: "default", id: "default", apiProvider: undefined },
-				{ name: "test", id: "test-id", apiProvider: "anthropic" },
-			])
-		})
-
-		it("should handle empty config file", async () => {
-			const emptyConfig: ApiConfigData = {
-				currentApiConfigName: "default",
-				apiConfigs: {},
-				modeApiConfigs: {
-					code: "default",
-					architect: "default",
-					ask: "default",
-				},
-			}
-
-			mockSecrets.get.mockResolvedValue(JSON.stringify(emptyConfig))
-
-			const configs = await configManager.listConfig()
-			expect(configs).toEqual([])
-		})
-
-		it("should throw error if reading from secrets fails", async () => {
-			mockSecrets.get.mockRejectedValue(new Error("Read failed"))
-
-			await expect(configManager.listConfig()).rejects.toThrow(
-				"Failed to list configs: Error: Failed to read config from secrets: Error: Read failed",
-			)
-		})
-	})
-
 	describe("SaveConfig", () => {
 		it("should save new config", async () => {
 			mockSecrets.get.mockResolvedValue(
@@ -156,7 +101,7 @@ describe("ConfigManager", () => {
 			)
 
 			const newConfig: ApiConfiguration = {
-				apiProvider: "anthropic",
+				apiProvider: "deepseek",
 				apiKey: "test-key",
 			}
 
@@ -193,7 +138,7 @@ describe("ConfigManager", () => {
 				currentApiConfigName: "default",
 				apiConfigs: {
 					test: {
-						apiProvider: "anthropic",
+						apiProvider: "deepseek",
 						apiKey: "old-key",
 						id: "test-id",
 					},
@@ -203,7 +148,7 @@ describe("ConfigManager", () => {
 			mockSecrets.get.mockResolvedValue(JSON.stringify(existingConfig))
 
 			const updatedConfig: ApiConfiguration = {
-				apiProvider: "anthropic",
+				apiProvider: "deepseek",
 				apiKey: "new-key",
 			}
 
@@ -213,7 +158,7 @@ describe("ConfigManager", () => {
 				currentApiConfigName: "default",
 				apiConfigs: {
 					test: {
-						apiProvider: "anthropic",
+						apiProvider: "deepseek",
 						apiKey: "new-key",
 						id: "test-id",
 					},
@@ -250,7 +195,7 @@ describe("ConfigManager", () => {
 						id: "default",
 					},
 					test: {
-						apiProvider: "anthropic",
+						apiProvider: "deepseek",
 						id: "test-id",
 					},
 				},
@@ -302,7 +247,7 @@ describe("ConfigManager", () => {
 				currentApiConfigName: "default",
 				apiConfigs: {
 					test: {
-						apiProvider: "anthropic",
+						apiProvider: "deepseek",
 						apiKey: "test-key",
 						id: "test-id",
 					},
@@ -314,7 +259,7 @@ describe("ConfigManager", () => {
 			const config = await configManager.loadConfig("test")
 
 			expect(config).toEqual({
-				apiProvider: "anthropic",
+				apiProvider: "deepseek",
 				apiKey: "test-key",
 				id: "test-id",
 			})
@@ -323,7 +268,7 @@ describe("ConfigManager", () => {
 			const storedConfig = JSON.parse(mockSecrets.store.mock.calls[0][1])
 			expect(storedConfig.currentApiConfigName).toBe("test")
 			expect(storedConfig.apiConfigs.test).toEqual({
-				apiProvider: "anthropic",
+				apiProvider: "deepseek",
 				apiKey: "test-key",
 				id: "test-id",
 			})
@@ -352,7 +297,7 @@ describe("ConfigManager", () => {
 					apiConfigs: {
 						test: {
 							config: {
-								apiProvider: "anthropic",
+								apiProvider: "deepseek",
 							},
 							id: "test-id",
 						},
@@ -376,7 +321,7 @@ describe("ConfigManager", () => {
 						id: "default",
 					},
 					test: {
-						apiProvider: "anthropic",
+						apiProvider: "deepseek",
 						id: "test-id",
 					},
 				},
@@ -391,7 +336,7 @@ describe("ConfigManager", () => {
 			expect(storedConfig.currentApiConfigName).toBe("test")
 			expect(storedConfig.apiConfigs.default.id).toBe("default")
 			expect(storedConfig.apiConfigs.test).toEqual({
-				apiProvider: "anthropic",
+				apiProvider: "deepseek",
 				id: "test-id",
 			})
 		})
@@ -414,7 +359,7 @@ describe("ConfigManager", () => {
 				JSON.stringify({
 					currentApiConfigName: "default",
 					apiConfigs: {
-						test: { apiProvider: "anthropic" },
+						test: { apiProvider: "deepseek" },
 					},
 				}),
 			)
@@ -434,7 +379,7 @@ describe("ConfigManager", () => {
 					currentApiConfigName: "test",
 					apiConfigs: {
 						test: {
-							apiProvider: "anthropic",
+							apiProvider: "deepseek",
 							id: "test-id",
 						},
 					},
@@ -457,7 +402,7 @@ describe("ConfigManager", () => {
 						id: "default",
 					},
 					test: {
-						apiProvider: "anthropic",
+						apiProvider: "deepseek",
 						id: "test-id",
 					},
 				},

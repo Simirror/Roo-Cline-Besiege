@@ -329,7 +329,7 @@ describe("ClineProvider", () => {
 			taskHistory: [],
 			shouldShowAnnouncement: false,
 			apiConfiguration: {
-				apiProvider: "openrouter",
+				apiProvider: "deepseek",
 			},
 			customInstructions: undefined,
 			alwaysAllowReadOnly: false,

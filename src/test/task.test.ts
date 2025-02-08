@@ -9,7 +9,7 @@ suite("Roo Code Task", () => {
 		const timeout = 30000
 		const interval = 1000
 
-		const extension = vscode.extensions.getExtension("RooVeterinaryInc.roo-cline")
+		const extension = vscode.extensions.getExtension("RooVeterinaryInc.roo-cline-besiege")
 
 		if (!extension) {
 			assert.fail("Extension not found")
@@ -18,16 +18,21 @@ suite("Roo Code Task", () => {
 		const api: ClineAPI = await extension.activate()
 		const provider = api.sidebarProvider as ClineProvider
 		await provider.updateGlobalState("apiProvider", "openrouter")
-		await provider.updateGlobalState("openRouterModelId", "anthropic/claude-3.5-sonnet")
-		await provider.storeSecret("openRouterApiKey", process.env.OPENROUTER_API_KEY || "sk-or-v1-fake-api-key")
+		await provider.updateGlobalState("volcengineModelId", "anthropic/claude-3.5-sonnet")
+		await provider.storeSecret("volcengineApiKey", process.env.OPENROUTER_API_KEY || "sk-or-v1-fake-api-key")
 
 		// Create webview panel with development options.
-		const panel = vscode.window.createWebviewPanel("roo-cline.SidebarProvider", "Roo Code", vscode.ViewColumn.One, {
-			enableScripts: true,
-			enableCommandUris: true,
-			retainContextWhenHidden: true,
-			localResourceRoots: [extension.extensionUri],
-		})
+		const panel = vscode.window.createWebviewPanel(
+			"roo-cline-besiege.SidebarProvider",
+			"Roo Code",
+			vscode.ViewColumn.One,
+			{
+				enableScripts: true,
+				enableCommandUris: true,
+				retainContextWhenHidden: true,
+				localResourceRoots: [extension.extensionUri],
+			},
+		)
 
 		try {
 			// Initialize provider with panel.

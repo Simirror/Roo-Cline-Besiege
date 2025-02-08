@@ -45,21 +45,21 @@ https://github.com/KumarVariable/vscode-extension-sidebar-html/blob/master/src/c
 
 type SecretKey =
 	| "apiKey"
-	| "glamaApiKey"
-	| "openRouterApiKey"
+	| "ctyunApiKey"
+	| "volcengineApiKey"
 	| "awsAccessKey"
 	| "awsSecretKey"
 	| "awsSessionToken"
 	| "openAiApiKey"
-	| "geminiApiKey"
-	| "openAiNativeApiKey"
+	| "siliconflowApiKey"
+	| "baiduApiKey"
 	| "deepSeekApiKey"
 	| "mistralApiKey"
 	| "unboundApiKey"
 type GlobalStateKey =
 	| "apiProvider"
 	| "apiModelId"
-	| "glamaModelId"
+	| "ctyunModelId"
 	| "glamaModelInfo"
 	| "awsRegion"
 	| "awsUseCrossRegionInference"
@@ -87,7 +87,7 @@ type GlobalStateKey =
 	| "anthropicBaseUrl"
 	| "azureApiVersion"
 	| "openAiStreamingEnabled"
-	| "openRouterModelId"
+	| "volcengineModelId"
 	| "openRouterModelInfo"
 	| "openRouterBaseUrl"
 	| "openRouterUseMiddleOutTransform"
@@ -128,8 +128,8 @@ export const GlobalFileNames = {
 }
 
 export class ClineProvider implements vscode.WebviewViewProvider {
-	public static readonly sideBarId = "roo-cline.SidebarProvider" // used in package.json as the view's id. This value cannot be changed due to how vscode caches views based on their id, and updating the id would break existing instances of the extension.
-	public static readonly tabPanelId = "roo-cline.TabPanelProvider"
+	public static readonly sideBarId = "roo-cline-besiege.SidebarProvider" // used in package.json as the view's id. This value cannot be changed due to how vscode caches views based on their id, and updating the id would break existing instances of the extension.
+	public static readonly tabPanelId = "roo-cline-besiege.TabPanelProvider"
 	private static activeInstances: Set<ClineProvider> = new Set()
 	private disposables: vscode.Disposable[] = []
 	private view?: vscode.WebviewView | vscode.WebviewPanel
@@ -192,7 +192,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 
 		// If no visible provider, try to show the sidebar view
 		if (!visibleProvider) {
-			await vscode.commands.executeCommand("roo-cline.SidebarProvider.focus")
+			await vscode.commands.executeCommand("roo-cline-besiege.SidebarProvider.focus")
 			// Wait briefly for the view to become visible
 			await delay(100)
 			visibleProvider = ClineProvider.getVisibleInstance()
@@ -608,28 +608,10 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 							if (openRouterModels) {
 								// update model info in state (this needs to be done here since we don't want to update state while settings is open, and we may refresh models there)
 								const { apiConfiguration } = await this.getState()
-								if (apiConfiguration.openRouterModelId) {
+								if (apiConfiguration.volcengineModelId) {
 									await this.updateGlobalState(
 										"openRouterModelInfo",
-										openRouterModels[apiConfiguration.openRouterModelId],
-									)
-									await this.postStateToWebview()
-								}
-							}
-						})
-						this.readGlamaModels().then((glamaModels) => {
-							if (glamaModels) {
-								this.postMessageToWebview({ type: "glamaModels", glamaModels })
-							}
-						})
-						this.refreshGlamaModels().then(async (glamaModels) => {
-							if (glamaModels) {
-								// update model info in state (this needs to be done here since we don't want to update state while settings is open, and we may refresh models there)
-								const { apiConfiguration } = await this.getState()
-								if (apiConfiguration.glamaModelId) {
-									await this.updateGlobalState(
-										"glamaModelInfo",
-										glamaModels[apiConfiguration.glamaModelId],
+										openRouterModels[apiConfiguration.volcengineModelId],
 									)
 									await this.postStateToWebview()
 								}
@@ -780,9 +762,6 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 						const vsCodeLmModels = await this.getVsCodeLmModels()
 						this.postMessageToWebview({ type: "vsCodeLmModels", vsCodeLmModels })
 						break
-					case "refreshGlamaModels":
-						await this.refreshGlamaModels()
-						break
 					case "refreshOpenRouterModels":
 						await this.refreshOpenRouterModels()
 						break
@@ -828,7 +807,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 						await this.context.globalState.update("allowedCommands", message.commands)
 						// Also update workspace settings
 						await vscode.workspace
-							.getConfiguration("roo-cline")
+							.getConfiguration("roo-cline-besiege")
 							.update("allowedCommands", message.commands, vscode.ConfigurationTarget.Global)
 						break
 					case "openMcpSettings": {
@@ -1181,7 +1160,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 
 							// Create diffStrategy based on current model and settings
 							const diffStrategy = getDiffStrategy(
-								apiConfiguration.apiModelId || apiConfiguration.openRouterModelId || "",
+								apiConfiguration.apiModelId || apiConfiguration.volcengineModelId || "",
 								fuzzyMatchThreshold,
 								Experiments.isEnabled(experiments, EXPERIMENT_IDS.DIFF_STRATEGY),
 							)
@@ -1481,10 +1460,10 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			apiProvider,
 			apiModelId,
 			apiKey,
-			glamaModelId,
+			ctyunModelId,
 			glamaModelInfo,
-			glamaApiKey,
-			openRouterApiKey,
+			ctyunApiKey,
+			volcengineApiKey,
 			awsAccessKey,
 			awsSecretKey,
 			awsSessionToken,
@@ -1504,12 +1483,12 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			lmStudioModelId,
 			lmStudioBaseUrl,
 			anthropicBaseUrl,
-			geminiApiKey,
-			openAiNativeApiKey,
+			siliconflowApiKey,
+			baiduApiKey,
 			deepSeekApiKey,
 			azureApiVersion,
 			openAiStreamingEnabled,
-			openRouterModelId,
+			volcengineModelId,
 			openRouterBaseUrl,
 			openRouterModelInfo,
 			openRouterUseMiddleOutTransform,
@@ -1521,10 +1500,10 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 		await this.updateGlobalState("apiProvider", apiProvider)
 		await this.updateGlobalState("apiModelId", apiModelId)
 		await this.storeSecret("apiKey", apiKey)
-		await this.updateGlobalState("glamaModelId", glamaModelId)
+		await this.updateGlobalState("ctyunModelId", ctyunModelId)
 		await this.updateGlobalState("glamaModelInfo", glamaModelInfo)
-		await this.storeSecret("glamaApiKey", glamaApiKey)
-		await this.storeSecret("openRouterApiKey", openRouterApiKey)
+		await this.storeSecret("ctyunApiKey", ctyunApiKey)
+		await this.storeSecret("volcengineApiKey", volcengineApiKey)
 		await this.storeSecret("awsAccessKey", awsAccessKey)
 		await this.storeSecret("awsSecretKey", awsSecretKey)
 		await this.storeSecret("awsSessionToken", awsSessionToken)
@@ -1544,12 +1523,12 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 		await this.updateGlobalState("lmStudioModelId", lmStudioModelId)
 		await this.updateGlobalState("lmStudioBaseUrl", lmStudioBaseUrl)
 		await this.updateGlobalState("anthropicBaseUrl", anthropicBaseUrl)
-		await this.storeSecret("geminiApiKey", geminiApiKey)
-		await this.storeSecret("openAiNativeApiKey", openAiNativeApiKey)
+		await this.storeSecret("siliconflowApiKey", siliconflowApiKey)
+		await this.storeSecret("baiduApiKey", baiduApiKey)
 		await this.storeSecret("deepSeekApiKey", deepSeekApiKey)
 		await this.updateGlobalState("azureApiVersion", azureApiVersion)
 		await this.updateGlobalState("openAiStreamingEnabled", openAiStreamingEnabled)
-		await this.updateGlobalState("openRouterModelId", openRouterModelId)
+		await this.updateGlobalState("volcengineModelId", volcengineModelId)
 		await this.updateGlobalState("openRouterModelInfo", openRouterModelInfo)
 		await this.updateGlobalState("openRouterBaseUrl", openRouterBaseUrl)
 		await this.updateGlobalState("openRouterUseMiddleOutTransform", openRouterUseMiddleOutTransform)
@@ -1684,13 +1663,6 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			throw error
 		}
 
-		const openrouter: ApiProvider = "openrouter"
-		await this.updateGlobalState("apiProvider", openrouter)
-		await this.storeSecret("openRouterApiKey", apiKey)
-		await this.postStateToWebview()
-		if (this.cline) {
-			this.cline.api = buildApiHandler({ apiProvider: openrouter, openRouterApiKey: apiKey })
-		}
 		// await this.postMessageToWebview({ type: "action", action: "settingsButtonClicked" }) // bad ux if user is on welcome
 	}
 
@@ -1698,119 +1670,6 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 		const cacheDir = path.join(this.context.globalStorageUri.fsPath, "cache")
 		await fs.mkdir(cacheDir, { recursive: true })
 		return cacheDir
-	}
-
-	async handleGlamaCallback(code: string) {
-		let apiKey: string
-		try {
-			const response = await axios.post("https://glama.ai/api/gateway/v1/auth/exchange-code", { code })
-			if (response.data && response.data.apiKey) {
-				apiKey = response.data.apiKey
-			} else {
-				throw new Error("Invalid response from Glama API")
-			}
-		} catch (error) {
-			this.outputChannel.appendLine(
-				`Error exchanging code for API key: ${JSON.stringify(error, Object.getOwnPropertyNames(error), 2)}`,
-			)
-			throw error
-		}
-
-		const glama: ApiProvider = "glama"
-		await this.updateGlobalState("apiProvider", glama)
-		await this.storeSecret("glamaApiKey", apiKey)
-		await this.postStateToWebview()
-		if (this.cline) {
-			this.cline.api = buildApiHandler({
-				apiProvider: glama,
-				glamaApiKey: apiKey,
-			})
-		}
-		// await this.postMessageToWebview({ type: "action", action: "settingsButtonClicked" }) // bad ux if user is on welcome
-	}
-
-	async readGlamaModels(): Promise<Record<string, ModelInfo> | undefined> {
-		const glamaModelsFilePath = path.join(await this.ensureCacheDirectoryExists(), GlobalFileNames.glamaModels)
-		const fileExists = await fileExistsAtPath(glamaModelsFilePath)
-		if (fileExists) {
-			const fileContents = await fs.readFile(glamaModelsFilePath, "utf8")
-			return JSON.parse(fileContents)
-		}
-		return undefined
-	}
-
-	async refreshGlamaModels() {
-		const glamaModelsFilePath = path.join(await this.ensureCacheDirectoryExists(), GlobalFileNames.glamaModels)
-
-		const models: Record<string, ModelInfo> = {}
-		try {
-			const response = await axios.get("https://glama.ai/api/gateway/v1/models")
-			/*
-				{
-					"added": "2024-12-24T15:12:49.324Z",
-					"capabilities": [
-						"adjustable_safety_settings",
-						"caching",
-						"code_execution",
-						"function_calling",
-						"json_mode",
-						"json_schema",
-						"system_instructions",
-						"tuning",
-						"input:audio",
-						"input:image",
-						"input:text",
-						"input:video",
-						"output:text"
-					],
-					"id": "google-vertex/gemini-1.5-flash-002",
-					"maxTokensInput": 1048576,
-					"maxTokensOutput": 8192,
-					"pricePerToken": {
-						"cacheRead": null,
-						"cacheWrite": null,
-						"input": "0.000000075",
-						"output": "0.0000003"
-					}
-				}
-			*/
-			if (response.data) {
-				const rawModels = response.data
-				const parsePrice = (price: any) => {
-					if (price) {
-						return parseFloat(price) * 1_000_000
-					}
-					return undefined
-				}
-				for (const rawModel of rawModels) {
-					const modelInfo: ModelInfo = {
-						maxTokens: rawModel.maxTokensOutput,
-						contextWindow: rawModel.maxTokensInput,
-						supportsImages: rawModel.capabilities?.includes("input:image"),
-						supportsComputerUse: rawModel.capabilities?.includes("computer_use"),
-						supportsPromptCache: rawModel.capabilities?.includes("caching"),
-						inputPrice: parsePrice(rawModel.pricePerToken?.input),
-						outputPrice: parsePrice(rawModel.pricePerToken?.output),
-						description: undefined,
-						cacheWritesPrice: parsePrice(rawModel.pricePerToken?.cacheWrite),
-						cacheReadsPrice: parsePrice(rawModel.pricePerToken?.cacheRead),
-					}
-
-					models[rawModel.id] = modelInfo
-				}
-			} else {
-				this.outputChannel.appendLine("Invalid response from Glama API")
-			}
-			await fs.writeFile(glamaModelsFilePath, JSON.stringify(models))
-			this.outputChannel.appendLine(`Glama models fetched and saved: ${JSON.stringify(models, null, 2)}`)
-		} catch (error) {
-			this.outputChannel.appendLine(
-				`Error fetching Glama models: ${JSON.stringify(error, Object.getOwnPropertyNames(error), 2)}`,
-			)
-		}
-
-		await this.postMessageToWebview({ type: "glamaModels", glamaModels: models })
-		return models
 	}
 
 	async readOpenRouterModels(): Promise<Record<string, ModelInfo> | undefined> {
@@ -2061,7 +1920,8 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			experiments,
 		} = await this.getState()
 
-		const allowedCommands = vscode.workspace.getConfiguration("roo-cline").get<string[]>("allowedCommands") || []
+		const allowedCommands =
+			vscode.workspace.getConfiguration("roo-cline-besiege").get<string[]>("allowedCommands") || []
 
 		return {
 			version: this.context.extension?.packageJSON?.version ?? "",
@@ -2162,10 +2022,10 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			storedApiProvider,
 			apiModelId,
 			apiKey,
-			glamaApiKey,
-			glamaModelId,
+			ctyunApiKey,
+			ctyunModelId,
 			glamaModelInfo,
-			openRouterApiKey,
+			volcengineApiKey,
 			awsAccessKey,
 			awsSecretKey,
 			awsSessionToken,
@@ -2185,13 +2045,13 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			lmStudioModelId,
 			lmStudioBaseUrl,
 			anthropicBaseUrl,
-			geminiApiKey,
-			openAiNativeApiKey,
+			siliconflowApiKey,
+			baiduApiKey,
 			deepSeekApiKey,
 			mistralApiKey,
 			azureApiVersion,
 			openAiStreamingEnabled,
-			openRouterModelId,
+			volcengineModelId,
 			openRouterModelInfo,
 			openRouterBaseUrl,
 			openRouterUseMiddleOutTransform,
@@ -2236,10 +2096,10 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			this.getGlobalState("apiProvider") as Promise<ApiProvider | undefined>,
 			this.getGlobalState("apiModelId") as Promise<string | undefined>,
 			this.getSecret("apiKey") as Promise<string | undefined>,
-			this.getSecret("glamaApiKey") as Promise<string | undefined>,
-			this.getGlobalState("glamaModelId") as Promise<string | undefined>,
+			this.getSecret("ctyunApiKey") as Promise<string | undefined>,
+			this.getGlobalState("ctyunModelId") as Promise<string | undefined>,
 			this.getGlobalState("glamaModelInfo") as Promise<ModelInfo | undefined>,
-			this.getSecret("openRouterApiKey") as Promise<string | undefined>,
+			this.getSecret("volcengineApiKey") as Promise<string | undefined>,
 			this.getSecret("awsAccessKey") as Promise<string | undefined>,
 			this.getSecret("awsSecretKey") as Promise<string | undefined>,
 			this.getSecret("awsSessionToken") as Promise<string | undefined>,
@@ -2259,13 +2119,13 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			this.getGlobalState("lmStudioModelId") as Promise<string | undefined>,
 			this.getGlobalState("lmStudioBaseUrl") as Promise<string | undefined>,
 			this.getGlobalState("anthropicBaseUrl") as Promise<string | undefined>,
-			this.getSecret("geminiApiKey") as Promise<string | undefined>,
-			this.getSecret("openAiNativeApiKey") as Promise<string | undefined>,
+			this.getSecret("siliconflowApiKey") as Promise<string | undefined>,
+			this.getSecret("baiduApiKey") as Promise<string | undefined>,
 			this.getSecret("deepSeekApiKey") as Promise<string | undefined>,
 			this.getSecret("mistralApiKey") as Promise<string | undefined>,
 			this.getGlobalState("azureApiVersion") as Promise<string | undefined>,
 			this.getGlobalState("openAiStreamingEnabled") as Promise<boolean | undefined>,
-			this.getGlobalState("openRouterModelId") as Promise<string | undefined>,
+			this.getGlobalState("volcengineModelId") as Promise<string | undefined>,
 			this.getGlobalState("openRouterModelInfo") as Promise<ModelInfo | undefined>,
 			this.getGlobalState("openRouterBaseUrl") as Promise<string | undefined>,
 			this.getGlobalState("openRouterUseMiddleOutTransform") as Promise<boolean | undefined>,
@@ -2314,12 +2174,13 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 		} else {
 			// Either new user or legacy user that doesn't have the apiProvider stored in state
 			// (If they're using OpenRouter or Bedrock, then apiProvider state will exist)
-			if (apiKey) {
-				apiProvider = "anthropic"
-			} else {
-				// New users should default to openrouter
-				apiProvider = "openrouter"
-			}
+			// if (apiKey) {
+			// 	apiProvider = "anthropic"
+			// } else {
+			// 	// New users should default to openrouter
+			// 	apiProvider = "openrouter"
+			// }
+			throw new Error("No API provider selected")
 		}
 
 		return {
@@ -2327,10 +2188,10 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 				apiProvider,
 				apiModelId,
 				apiKey,
-				glamaApiKey,
-				glamaModelId,
+				ctyunApiKey,
+				ctyunModelId,
 				glamaModelInfo,
-				openRouterApiKey,
+				volcengineApiKey,
 				awsAccessKey,
 				awsSecretKey,
 				awsSessionToken,
@@ -2350,13 +2211,13 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 				lmStudioModelId,
 				lmStudioBaseUrl,
 				anthropicBaseUrl,
-				geminiApiKey,
-				openAiNativeApiKey,
+				siliconflowApiKey,
+				baiduApiKey,
 				deepSeekApiKey,
 				mistralApiKey,
 				azureApiVersion,
 				openAiStreamingEnabled,
-				openRouterModelId,
+				volcengineModelId,
 				openRouterModelInfo,
 				openRouterBaseUrl,
 				openRouterUseMiddleOutTransform,
@@ -2504,14 +2365,14 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 		}
 		const secretKeys: SecretKey[] = [
 			"apiKey",
-			"glamaApiKey",
-			"openRouterApiKey",
-			"awsAccessKey",
+			"ctyunApiKey",
+			"volcengineApiKey",
+			"siliconflowApiKey",
 			"awsSecretKey",
 			"awsSessionToken",
 			"openAiApiKey",
-			"geminiApiKey",
-			"openAiNativeApiKey",
+			"siliconflowApiKey",
+			"baiduApiKey",
 			"deepSeekApiKey",
 			"mistralApiKey",
 			"unboundApiKey",

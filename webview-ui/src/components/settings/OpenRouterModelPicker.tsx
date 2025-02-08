@@ -13,7 +13,7 @@ import { ModelInfoView, normalizeApiConfiguration } from "./ApiOptions"
 
 const OpenRouterModelPicker: React.FC = () => {
 	const { apiConfiguration, setApiConfiguration, openRouterModels, onUpdateApiConfig } = useExtensionState()
-	const [searchTerm, setSearchTerm] = useState(apiConfiguration?.openRouterModelId || openRouterDefaultModelId)
+	const [searchTerm, setSearchTerm] = useState(apiConfiguration?.volcengineModelId || openRouterDefaultModelId)
 	const [isDropdownVisible, setIsDropdownVisible] = useState(false)
 	const [selectedIndex, setSelectedIndex] = useState(-1)
 	const dropdownRef = useRef<HTMLDivElement>(null)
@@ -25,7 +25,7 @@ const OpenRouterModelPicker: React.FC = () => {
 		// could be setting invalid model id/undefined info but validation will catch it
 		const apiConfig = {
 			...apiConfiguration,
-			openRouterModelId: newModelId,
+			volcengineModelId: newModelId,
 			openRouterModelInfo: openRouterModels[newModelId],
 		}
 
@@ -39,8 +39,8 @@ const OpenRouterModelPicker: React.FC = () => {
 	}, [apiConfiguration])
 
 	useEffect(() => {
-		if (apiConfiguration?.openRouterModelId && apiConfiguration?.openRouterModelId !== searchTerm) {
-			setSearchTerm(apiConfiguration?.openRouterModelId)
+		if (apiConfiguration?.volcengineModelId && apiConfiguration?.volcengineModelId !== searchTerm) {
+			setSearchTerm(apiConfiguration?.volcengineModelId)
 		}
 	}, [apiConfiguration, searchTerm])
 

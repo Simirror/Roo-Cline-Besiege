@@ -9,51 +9,33 @@ import {
 	anthropicDefaultModelId,
 	anthropicModels,
 	azureOpenAiDefaultApiVersion,
-	bedrockDefaultModelId,
-	bedrockModels,
+	baiduDefaultModelId,
+	baiduModels,
 	deepSeekDefaultModelId,
 	deepSeekModels,
-	geminiDefaultModelId,
 	geminiModels,
-	glamaDefaultModelId,
-	glamaDefaultModelInfo,
-	mistralDefaultModelId,
-	mistralModels,
 	openAiModelInfoSaneDefaults,
-	openAiNativeDefaultModelId,
-	openAiNativeModels,
-	openRouterDefaultModelId,
-	openRouterDefaultModelInfo,
-	vertexDefaultModelId,
-	vertexModels,
-	unboundDefaultModelId,
-	unboundModels,
+	siliconflowDefaultModelId,
+	siliconflowModels,
 } from "../../../../src/shared/api"
 import { ExtensionMessage } from "../../../../src/shared/ExtensionMessage"
 import { useExtensionState } from "../../context/ExtensionStateContext"
 import { vscode } from "../../utils/vscode"
-import * as vscodemodels from "vscode"
-import VSCodeButtonLink from "../common/VSCodeButtonLink"
-import OpenRouterModelPicker, {
-	ModelDescriptionMarkdown,
-	OPENROUTER_MODEL_PICKER_Z_INDEX,
-} from "./OpenRouterModelPicker"
+
+import { ModelDescriptionMarkdown, OPENROUTER_MODEL_PICKER_Z_INDEX } from "./OpenRouterModelPicker"
 import OpenAiModelPicker from "./OpenAiModelPicker"
-import GlamaModelPicker from "./GlamaModelPicker"
 
 interface ApiOptionsProps {
 	apiErrorMessage?: string
 	modelIdErrorMessage?: string
 }
 
-const ApiOptions = ({ apiErrorMessage, modelIdErrorMessage }: ApiOptionsProps) => {
-	const { apiConfiguration, uriScheme, handleInputChange } = useExtensionState()
+const ApiOptions = ({ modelIdErrorMessage }: ApiOptionsProps) => {
+	const { apiConfiguration, handleInputChange } = useExtensionState()
 	const [ollamaModels, setOllamaModels] = useState<string[]>([])
-	const [lmStudioModels, setLmStudioModels] = useState<string[]>([])
-	const [vsCodeLmModels, setVsCodeLmModels] = useState<vscodemodels.LanguageModelChatSelector[]>([])
-	const [anthropicBaseUrlSelected, setAnthropicBaseUrlSelected] = useState(!!apiConfiguration?.anthropicBaseUrl)
+
 	const [azureApiVersionSelected, setAzureApiVersionSelected] = useState(!!apiConfiguration?.azureApiVersion)
-	const [openRouterBaseUrlSelected, setOpenRouterBaseUrlSelected] = useState(!!apiConfiguration?.openRouterBaseUrl)
+
 	const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
 
 	const { selectedProvider, selectedModelId, selectedModelInfo } = useMemo(() => {
@@ -85,10 +67,6 @@ const ApiOptions = ({ apiErrorMessage, modelIdErrorMessage }: ApiOptionsProps) =
 		const message: ExtensionMessage = event.data
 		if (message.type === "ollamaModels" && message.ollamaModels) {
 			setOllamaModels(message.ollamaModels)
-		} else if (message.type === "lmStudioModels" && message.lmStudioModels) {
-			setLmStudioModels(message.lmStudioModels)
-		} else if (message.type === "vsCodeLmModels" && message.vsCodeLmModels) {
-			setVsCodeLmModels(message.vsCodeLmModels)
 		}
 	}, [])
 	useEvent("message", handleMessage)
@@ -122,7 +100,7 @@ const ApiOptions = ({ apiErrorMessage, modelIdErrorMessage }: ApiOptionsProps) =
 		<div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
 			<div className="dropdown-container">
 				<label htmlFor="api-provider">
-					<span style={{ fontWeight: 500 }}>API Provider</span>
+					<span style={{ fontWeight: 500 }}>API 提供商</span>
 				</label>
 				<Dropdown
 					id="api-provider"
@@ -139,431 +117,16 @@ const ApiOptions = ({ apiErrorMessage, modelIdErrorMessage }: ApiOptionsProps) =
 					}}
 					style={{ minWidth: 130, position: "relative", zIndex: OPENROUTER_MODEL_PICKER_Z_INDEX + 1 }}
 					options={[
-						{ value: "openrouter", label: "OpenRouter" },
-						{ value: "anthropic", label: "Anthropic" },
-						{ value: "gemini", label: "Google Gemini" },
 						{ value: "deepseek", label: "DeepSeek" },
-						{ value: "openai-native", label: "OpenAI" },
 						{ value: "openai", label: "OpenAI Compatible" },
-						{ value: "vertex", label: "GCP Vertex AI" },
-						{ value: "bedrock", label: "AWS Bedrock" },
-						{ value: "glama", label: "Glama" },
-						{ value: "vscode-lm", label: "VS Code LM API" },
-						{ value: "mistral", label: "Mistral" },
-						{ value: "lmstudio", label: "LM Studio" },
 						{ value: "ollama", label: "Ollama" },
-						{ value: "unbound", label: "Unbound" },
+						{ value: "ctyun", label: "TCYun(天翼云)" },
+						{ value: "siliconflow", label: "SiliconFlow(硅基流动)" },
+						{ value: "baidu", label: "baidu(百度云)" },
+						{ value: "volcengine", label: "volcengine(字写火山引擎)" },
 					]}
 				/>
 			</div>
-
-			{selectedProvider === "anthropic" && (
-				<div>
-					<VSCodeTextField
-						value={apiConfiguration?.apiKey || ""}
-						style={{ width: "100%" }}
-						type="password"
-						onInput={handleInputChange("apiKey")}
-						placeholder="Enter API Key...">
-						<span style={{ fontWeight: 500 }}>Anthropic API Key</span>
-					</VSCodeTextField>
-
-					<Checkbox
-						checked={anthropicBaseUrlSelected}
-						onChange={(checked: boolean) => {
-							setAnthropicBaseUrlSelected(checked)
-							if (!checked) {
-								handleInputChange("anthropicBaseUrl")({
-									target: {
-										value: "",
-									},
-								})
-							}
-						}}>
-						Use custom base URL
-					</Checkbox>
-
-					{anthropicBaseUrlSelected && (
-						<VSCodeTextField
-							value={apiConfiguration?.anthropicBaseUrl || ""}
-							style={{ width: "100%", marginTop: 3 }}
-							type="url"
-							onInput={handleInputChange("anthropicBaseUrl")}
-							placeholder="Default: https://api.anthropic.com"
-						/>
-					)}
-
-					<p
-						style={{
-							fontSize: "12px",
-							marginTop: 3,
-							color: "var(--vscode-descriptionForeground)",
-						}}>
-						This key is stored locally and only used to make API requests from this extension.
-						{!apiConfiguration?.apiKey && (
-							<VSCodeLink
-								href="https://console.anthropic.com/settings/keys"
-								style={{ display: "inline", fontSize: "inherit" }}>
-								You can get an Anthropic API key by signing up here.
-							</VSCodeLink>
-						)}
-					</p>
-				</div>
-			)}
-
-			{selectedProvider === "glama" && (
-				<div>
-					<VSCodeTextField
-						value={apiConfiguration?.glamaApiKey || ""}
-						style={{ width: "100%" }}
-						type="password"
-						onInput={handleInputChange("glamaApiKey")}
-						placeholder="Enter API Key...">
-						<span style={{ fontWeight: 500 }}>Glama API Key</span>
-					</VSCodeTextField>
-					{!apiConfiguration?.glamaApiKey && (
-						<VSCodeButtonLink
-							href={getGlamaAuthUrl(uriScheme)}
-							style={{ margin: "5px 0 0 0" }}
-							appearance="secondary">
-							Get Glama API Key
-						</VSCodeButtonLink>
-					)}
-					<p
-						style={{
-							fontSize: "12px",
-							marginTop: "5px",
-							color: "var(--vscode-descriptionForeground)",
-						}}>
-						This key is stored locally and only used to make API requests from this extension.
-					</p>
-				</div>
-			)}
-
-			{selectedProvider === "openai-native" && (
-				<div>
-					<VSCodeTextField
-						value={apiConfiguration?.openAiNativeApiKey || ""}
-						style={{ width: "100%" }}
-						type="password"
-						onInput={handleInputChange("openAiNativeApiKey")}
-						placeholder="Enter API Key...">
-						<span style={{ fontWeight: 500 }}>OpenAI API Key</span>
-					</VSCodeTextField>
-					<p
-						style={{
-							fontSize: "12px",
-							marginTop: 3,
-							color: "var(--vscode-descriptionForeground)",
-						}}>
-						This key is stored locally and only used to make API requests from this extension.
-						{!apiConfiguration?.openAiNativeApiKey && (
-							<VSCodeLink
-								href="https://platform.openai.com/api-keys"
-								style={{ display: "inline", fontSize: "inherit" }}>
-								You can get an OpenAI API key by signing up here.
-							</VSCodeLink>
-						)}
-					</p>
-				</div>
-			)}
-
-			{selectedProvider === "mistral" && (
-				<div>
-					<VSCodeTextField
-						value={apiConfiguration?.mistralApiKey || ""}
-						style={{ width: "100%" }}
-						type="password"
-						onInput={handleInputChange("mistralApiKey")}
-						placeholder="Enter API Key...">
-						<span style={{ fontWeight: 500 }}>Mistral API Key</span>
-					</VSCodeTextField>
-					<p
-						style={{
-							fontSize: "12px",
-							marginTop: 3,
-							color: "var(--vscode-descriptionForeground)",
-						}}>
-						This key is stored locally and only used to make API requests from this extension.
-						{!apiConfiguration?.mistralApiKey && (
-							<VSCodeLink
-								href="https://console.mistral.ai/codestral/"
-								style={{
-									display: "inline",
-									fontSize: "inherit",
-								}}>
-								You can get a Mistral API key by signing up here.
-							</VSCodeLink>
-						)}
-					</p>
-				</div>
-			)}
-
-			{selectedProvider === "openrouter" && (
-				<div>
-					<VSCodeTextField
-						value={apiConfiguration?.openRouterApiKey || ""}
-						style={{ width: "100%" }}
-						type="password"
-						onInput={handleInputChange("openRouterApiKey")}
-						placeholder="Enter API Key...">
-						<span style={{ fontWeight: 500 }}>OpenRouter API Key</span>
-					</VSCodeTextField>
-					{!apiConfiguration?.openRouterApiKey && (
-						<p>
-							<VSCodeButtonLink
-								href={getOpenRouterAuthUrl(uriScheme)}
-								style={{ margin: "5px 0 0 0" }}
-								appearance="secondary">
-								Get OpenRouter API Key
-							</VSCodeButtonLink>
-						</p>
-					)}
-					<Checkbox
-						checked={openRouterBaseUrlSelected}
-						onChange={(checked: boolean) => {
-							setOpenRouterBaseUrlSelected(checked)
-							if (!checked) {
-								handleInputChange("openRouterBaseUrl")({
-									target: {
-										value: "",
-									},
-								})
-							}
-						}}>
-						Use custom base URL
-					</Checkbox>
-
-					{openRouterBaseUrlSelected && (
-						<VSCodeTextField
-							value={apiConfiguration?.openRouterBaseUrl || ""}
-							style={{ width: "100%", marginTop: 3 }}
-							type="url"
-							onInput={handleInputChange("openRouterBaseUrl")}
-							placeholder="Default: https://openrouter.ai/api/v1"
-						/>
-					)}
-					<p
-						style={{
-							fontSize: "12px",
-							marginTop: "5px",
-							color: "var(--vscode-descriptionForeground)",
-						}}>
-						This key is stored locally and only used to make API requests from this extension.{" "}
-						{/* {!apiConfiguration?.openRouterApiKey && (
-							<span style={{ color: "var(--vscode-charts-green)" }}>
-								(<span style={{ fontWeight: 500 }}>Note:</span> OpenRouter is recommended for high rate
-								limits, prompt caching, and wider selection of models.)
-							</span>
-						)} */}
-					</p>
-					<Checkbox
-						checked={apiConfiguration?.openRouterUseMiddleOutTransform || false}
-						onChange={(checked: boolean) => {
-							handleInputChange("openRouterUseMiddleOutTransform")({
-								target: { value: checked },
-							})
-						}}>
-						Compress prompts and message chains to the context size (
-						<a href="https://openrouter.ai/docs/transforms">OpenRouter Transforms</a>)
-					</Checkbox>
-					<br />
-				</div>
-			)}
-
-			{selectedProvider === "bedrock" && (
-				<div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-					<VSCodeRadioGroup
-						value={apiConfiguration?.awsUseProfile ? "profile" : "credentials"}
-						onChange={(e) => {
-							const value = (e.target as HTMLInputElement)?.value
-							const useProfile = value === "profile"
-							handleInputChange("awsUseProfile")({
-								target: { value: useProfile },
-							})
-						}}>
-						<VSCodeRadio value="credentials">AWS Credentials</VSCodeRadio>
-						<VSCodeRadio value="profile">AWS Profile</VSCodeRadio>
-					</VSCodeRadioGroup>
-					{/* AWS Profile Config Block */}
-					{apiConfiguration?.awsUseProfile ? (
-						<VSCodeTextField
-							value={apiConfiguration?.awsProfile || ""}
-							style={{ width: "100%" }}
-							onInput={handleInputChange("awsProfile")}
-							placeholder="Enter profile name">
-							<span style={{ fontWeight: 500 }}>AWS Profile Name</span>
-						</VSCodeTextField>
-					) : (
-						<>
-							{/* AWS Credentials Config Block */}
-							<VSCodeTextField
-								value={apiConfiguration?.awsAccessKey || ""}
-								style={{ width: "100%" }}
-								type="password"
-								onInput={handleInputChange("awsAccessKey")}
-								placeholder="Enter Access Key...">
-								<span style={{ fontWeight: 500 }}>AWS Access Key</span>
-							</VSCodeTextField>
-							<VSCodeTextField
-								value={apiConfiguration?.awsSecretKey || ""}
-								style={{ width: "100%" }}
-								type="password"
-								onInput={handleInputChange("awsSecretKey")}
-								placeholder="Enter Secret Key...">
-								<span style={{ fontWeight: 500 }}>AWS Secret Key</span>
-							</VSCodeTextField>
-							<VSCodeTextField
-								value={apiConfiguration?.awsSessionToken || ""}
-								style={{ width: "100%" }}
-								type="password"
-								onInput={handleInputChange("awsSessionToken")}
-								placeholder="Enter Session Token...">
-								<span style={{ fontWeight: 500 }}>AWS Session Token</span>
-							</VSCodeTextField>
-						</>
-					)}
-					<div className="dropdown-container">
-						<label htmlFor="aws-region-dropdown">
-							<span style={{ fontWeight: 500 }}>AWS Region</span>
-						</label>
-						<Dropdown
-							id="aws-region-dropdown"
-							value={apiConfiguration?.awsRegion || ""}
-							style={{ width: "100%" }}
-							onChange={(value: unknown) => {
-								handleInputChange("awsRegion")({
-									target: {
-										value: (value as DropdownOption).value,
-									},
-								})
-							}}
-							options={[
-								{ value: "", label: "Select a region..." },
-								{ value: "us-east-1", label: "us-east-1" },
-								{ value: "us-east-2", label: "us-east-2" },
-								{ value: "us-west-2", label: "us-west-2" },
-								{ value: "ap-south-1", label: "ap-south-1" },
-								{ value: "ap-northeast-1", label: "ap-northeast-1" },
-								{ value: "ap-northeast-2", label: "ap-northeast-2" },
-								{ value: "ap-southeast-1", label: "ap-southeast-1" },
-								{ value: "ap-southeast-2", label: "ap-southeast-2" },
-								{ value: "ca-central-1", label: "ca-central-1" },
-								{ value: "eu-central-1", label: "eu-central-1" },
-								{ value: "eu-west-1", label: "eu-west-1" },
-								{ value: "eu-west-2", label: "eu-west-2" },
-								{ value: "eu-west-3", label: "eu-west-3" },
-								{ value: "sa-east-1", label: "sa-east-1" },
-								{ value: "us-gov-west-1", label: "us-gov-west-1" },
-							]}
-						/>
-					</div>
-					<Checkbox
-						checked={apiConfiguration?.awsUseCrossRegionInference || false}
-						onChange={(checked: boolean) => {
-							handleInputChange("awsUseCrossRegionInference")({
-								target: { value: checked },
-							})
-						}}>
-						Use cross-region inference
-					</Checkbox>
-					<p
-						style={{
-							fontSize: "12px",
-							marginTop: "5px",
-							color: "var(--vscode-descriptionForeground)",
-						}}>
-						Authenticate by either providing the keys above or use the default AWS credential providers,
-						i.e. ~/.aws/credentials or environment variables. These credentials are only used locally to
-						make API requests from this extension.
-					</p>
-				</div>
-			)}
-
-			{apiConfiguration?.apiProvider === "vertex" && (
-				<div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-					<VSCodeTextField
-						value={apiConfiguration?.vertexProjectId || ""}
-						style={{ width: "100%" }}
-						onInput={handleInputChange("vertexProjectId")}
-						placeholder="Enter Project ID...">
-						<span style={{ fontWeight: 500 }}>Google Cloud Project ID</span>
-					</VSCodeTextField>
-					<div className="dropdown-container">
-						<label htmlFor="vertex-region-dropdown">
-							<span style={{ fontWeight: 500 }}>Google Cloud Region</span>
-						</label>
-						<Dropdown
-							id="vertex-region-dropdown"
-							value={apiConfiguration?.vertexRegion || ""}
-							style={{ width: "100%" }}
-							onChange={(value: unknown) => {
-								handleInputChange("vertexRegion")({
-									target: {
-										value: (value as DropdownOption).value,
-									},
-								})
-							}}
-							options={[
-								{ value: "", label: "Select a region..." },
-								{ value: "us-east5", label: "us-east5" },
-								{ value: "us-central1", label: "us-central1" },
-								{ value: "europe-west1", label: "europe-west1" },
-								{ value: "europe-west4", label: "europe-west4" },
-								{ value: "asia-southeast1", label: "asia-southeast1" },
-							]}
-						/>
-					</div>
-					<p
-						style={{
-							fontSize: "12px",
-							marginTop: "5px",
-							color: "var(--vscode-descriptionForeground)",
-						}}>
-						To use Google Cloud Vertex AI, you need to
-						<VSCodeLink
-							href="https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude#before_you_begin"
-							style={{ display: "inline", fontSize: "inherit" }}>
-							{
-								"1) create a Google Cloud account › enable the Vertex AI API › enable the desired Claude models,"
-							}
-						</VSCodeLink>{" "}
-						<VSCodeLink
-							href="https://cloud.google.com/docs/authentication/provide-credentials-adc#google-idp"
-							style={{ display: "inline", fontSize: "inherit" }}>
-							{"2) install the Google Cloud CLI › configure Application Default Credentials."}
-						</VSCodeLink>
-					</p>
-				</div>
-			)}
-
-			{selectedProvider === "gemini" && (
-				<div>
-					<VSCodeTextField
-						value={apiConfiguration?.geminiApiKey || ""}
-						style={{ width: "100%" }}
-						type="password"
-						onInput={handleInputChange("geminiApiKey")}
-						placeholder="Enter API Key...">
-						<span style={{ fontWeight: 500 }}>Gemini API Key</span>
-					</VSCodeTextField>
-					<p
-						style={{
-							fontSize: "12px",
-							marginTop: 3,
-							color: "var(--vscode-descriptionForeground)",
-						}}>
-						This key is stored locally and only used to make API requests from this extension.
-						{!apiConfiguration?.geminiApiKey && (
-							<VSCodeLink
-								href="https://ai.google.dev/"
-								style={{ display: "inline", fontSize: "inherit" }}>
-								You can get a Gemini API key by signing up here.
-							</VSCodeLink>
-						)}
-					</p>
-				</div>
-			)}
 
 			{selectedProvider === "openai" && (
 				<div style={{ display: "flex", flexDirection: "column", rowGap: "5px" }}>
@@ -1066,75 +629,6 @@ const ApiOptions = ({ apiErrorMessage, modelIdErrorMessage }: ApiOptionsProps) =
 				</div>
 			)}
 
-			{selectedProvider === "lmstudio" && (
-				<div>
-					<VSCodeTextField
-						value={apiConfiguration?.lmStudioBaseUrl || ""}
-						style={{ width: "100%" }}
-						type="url"
-						onInput={handleInputChange("lmStudioBaseUrl")}
-						placeholder={"Default: http://localhost:1234"}>
-						<span style={{ fontWeight: 500 }}>Base URL (optional)</span>
-					</VSCodeTextField>
-					<VSCodeTextField
-						value={apiConfiguration?.lmStudioModelId || ""}
-						style={{ width: "100%" }}
-						onInput={handleInputChange("lmStudioModelId")}
-						placeholder={"e.g. meta-llama-3.1-8b-instruct"}>
-						<span style={{ fontWeight: 500 }}>Model ID</span>
-					</VSCodeTextField>
-					{lmStudioModels.length > 0 && (
-						<VSCodeRadioGroup
-							value={
-								lmStudioModels.includes(apiConfiguration?.lmStudioModelId || "")
-									? apiConfiguration?.lmStudioModelId
-									: ""
-							}
-							onChange={(e) => {
-								const value = (e.target as HTMLInputElement)?.value
-								// need to check value first since radio group returns empty string sometimes
-								if (value) {
-									handleInputChange("lmStudioModelId")({
-										target: { value },
-									})
-								}
-							}}>
-							{lmStudioModels.map((model) => (
-								<VSCodeRadio
-									key={model}
-									value={model}
-									checked={apiConfiguration?.lmStudioModelId === model}>
-									{model}
-								</VSCodeRadio>
-							))}
-						</VSCodeRadioGroup>
-					)}
-					<p
-						style={{
-							fontSize: "12px",
-							marginTop: "5px",
-							color: "var(--vscode-descriptionForeground)",
-						}}>
-						LM Studio allows you to run models locally on your computer. For instructions on how to get
-						started, see their
-						<VSCodeLink href="https://lmstudio.ai/docs" style={{ display: "inline", fontSize: "inherit" }}>
-							quickstart guide.
-						</VSCodeLink>
-						You will also need to start LM Studio's{" "}
-						<VSCodeLink
-							href="https://lmstudio.ai/docs/basics/server"
-							style={{ display: "inline", fontSize: "inherit" }}>
-							local server
-						</VSCodeLink>{" "}
-						feature to use it with this extension.{" "}
-						<span style={{ color: "var(--vscode-errorForeground)" }}>
-							(<span style={{ fontWeight: 500 }}>Note:</span> Roo Code uses complex prompts and works best
-							with Claude models. Less capable models may not work as expected.)
-						</span>
-					</p>
-				</div>
-			)}
-
 			{selectedProvider === "deepseek" && (
 				<div>
 					<VSCodeTextField
@@ -1163,65 +657,131 @@ const ApiOptions = ({ apiErrorMessage, modelIdErrorMessage }: ApiOptionsProps) =
 				</div>
 			)}
 
-			{selectedProvider === "vscode-lm" && (
+			{selectedProvider === "siliconflow" && (
 				<div>
-					<div className="dropdown-container">
-						<label htmlFor="vscode-lm-model">
-							<span style={{ fontWeight: 500 }}>Language Model</span>
-						</label>
-						{vsCodeLmModels.length > 0 ? (
-							<Dropdown
-								id="vscode-lm-model"
-								value={
-									apiConfiguration?.vsCodeLmModelSelector
-										? `${apiConfiguration.vsCodeLmModelSelector.vendor ?? ""}/${apiConfiguration.vsCodeLmModelSelector.family ?? ""}`
-										: ""
-								}
-								onChange={(value: unknown) => {
-									const valueStr = (value as DropdownOption)?.value
-									if (!valueStr) {
-										return
-									}
-									const [vendor, family] = valueStr.split("/")
-									handleInputChange("vsCodeLmModelSelector")({
-										target: {
-											value: { vendor, family },
-										},
-									})
-								}}
-								style={{ width: "100%" }}
-								options={[
-									{ value: "", label: "Select a model..." },
-									...vsCodeLmModels.map((model) => ({
-										value: `${model.vendor}/${model.family}`,
-										label: `${model.vendor} - ${model.family}`,
-									})),
-								]}
-							/>
-						) : (
-							<p
-								style={{
-									fontSize: "12px",
-									marginTop: "5px",
-									color: "var(--vscode-descriptionForeground)",
-								}}>
-								The VS Code Language Model API allows you to run models provided by other VS Code
-								extensions (including but not limited to GitHub Copilot). The easiest way to get started
-								is to install the Copilot and Copilot Chat extensions from the VS Code Marketplace.
-							</p>
+					<VSCodeTextField
+						value={apiConfiguration?.siliconflowApiKey || ""}
+						style={{ width: "100%" }}
+						type="password"
+						onInput={handleInputChange("siliconflowApiKey")}
+						placeholder="Enter API Key...">
+						<span style={{ fontWeight: 500 }}>Siliconflow API Key</span>
+					</VSCodeTextField>
+					<p
+						style={{
+							fontSize: "12px",
+							marginTop: "5px",
+							color: "var(--vscode-descriptionForeground)",
+						}}>
+						这个Key只会存储在本地, 不用担心隐私问题.
+						{!apiConfiguration?.siliconflowApiKey && (
+							<VSCodeLink
+								href="https://cloud.siliconflow.cn/account/ak/"
+								style={{ display: "inline", fontSize: "inherit" }}>
+								你可以点击注册相关信息.
+							</VSCodeLink>
 						)}
+					</p>
+				</div>
+			)}
 
-						<p
-							style={{
-								fontSize: "12px",
-								marginTop: "5px",
-								color: "var(--vscode-errorForeground)",
-								fontWeight: 500,
-							}}>
-							Note: This is a very experimental integration and may not work as expected. Please report
-							any issues to the Roo-Code GitHub repository.
-						</p>
-					</div>
+			{selectedProvider === "baidu" && (
+				<div>
+					<VSCodeTextField
+						value={apiConfiguration?.baiduApiKey || ""}
+						style={{ width: "100%" }}
+						type="password"
+						onInput={handleInputChange("baiduApiKey")}
+						placeholder="Enter API Key...">
+						<span style={{ fontWeight: 500 }}>Siliconflow API Key</span>
+					</VSCodeTextField>
+					<p
+						style={{
+							fontSize: "12px",
+							marginTop: "5px",
+							color: "var(--vscode-descriptionForeground)",
+						}}>
+						这个Key只会存储在本地, 不用担心隐私问题.
+						{!apiConfiguration?.baiduApiKey && (
+							<VSCodeLink
+								href="https://cloud.siliconflow.cn/account/ak/"
+								style={{ display: "inline", fontSize: "inherit" }}>
+								你可以点击注册相关信息.
+							</VSCodeLink>
+						)}
+					</p>
+				</div>
+			)}
+
+			{selectedProvider === "ctyun" && (
+				<div>
+					<VSCodeTextField
+						value={apiConfiguration?.ctyunApiKey || ""}
+						style={{ width: "100%" }}
+						type="password"
+						onInput={handleInputChange("ctyunApiKey")}
+						placeholder="Enter API Key...">
+						<span style={{ fontWeight: 500 }}>平台 API Key</span>
+					</VSCodeTextField>
+					<p
+						style={{
+							fontSize: "12px",
+							marginTop: "5px",
+							color: "var(--vscode-descriptionForeground)",
+						}}>
+						这个Key只会存储在本地, 不用担心隐私问题.
+						{!apiConfiguration?.ctyunApiKey && (
+							<VSCodeLink
+								href="https://huiju.ctyun.cn/"
+								style={{ display: "inline", fontSize: "inherit" }}>
+								你可以点击注册相关信息.
+							</VSCodeLink>
+						)}
+					</p>
+					<VSCodeTextField
+						value={apiConfiguration?.ctyunModelId || ""}
+						style={{ width: "100%" }}
+						onInput={handleInputChange("ctyunModelId")}
+						placeholder={"e.g. llama3.1"}>
+						<span style={{ fontWeight: 500 }}>Model ID</span>
+					</VSCodeTextField>
+					目前仅支持DeepSeek-R1模型.
+				</div>
+			)}
+
+			{selectedProvider === "volcengine" && (
+				<div>
+					<VSCodeTextField
+						value={apiConfiguration?.volcengineApiKey || ""}
+						style={{ width: "100%" }}
+						type="password"
+						onInput={handleInputChange("volcengineApiKey")}
+						placeholder="Enter API Key...">
+						<span style={{ fontWeight: 500 }}>平台 API Key</span>
+					</VSCodeTextField>
+					<p
+						style={{
+							fontSize: "12px",
+							marginTop: "5px",
+							color: "var(--vscode-descriptionForeground)",
+						}}>
+						这个Key只会存储在本地, 不用担心隐私问题.
+						{!apiConfiguration?.volcengineApiKey && (
+							<VSCodeLink
+								href="https://huiju.ctyun.cn/"
+								style={{ display: "inline", fontSize: "inherit" }}>
+								你可以点击注册相关信息.
+							</VSCodeLink>
+						)}
+					</p>
+					<VSCodeTextField
+						value={apiConfiguration?.volcengineModelId || ""}
+						style={{ width: "100%" }}
+						onInput={handleInputChange("volcengineModelId")}
+						placeholder={"e.g. llama3.1"}>
+						<span style={{ fontWeight: 500 }}>Model ID</span>
+					</VSCodeTextField>
+					目前仅支持DeepSeek-R1模型.
 				</div>
 			)}
 
@@ -1289,50 +849,6 @@ const ApiOptions = ({ apiErrorMessage, modelIdErrorMessage }: ApiOptionsProps) =
 				</div>
 			)}
 
-			{selectedProvider === "unbound" && (
-				<div>
-					<VSCodeTextField
-						value={apiConfiguration?.unboundApiKey || ""}
-						style={{ width: "100%" }}
-						type="password"
-						onChange={handleInputChange("unboundApiKey")}
-						placeholder="Enter API Key...">
-						<span style={{ fontWeight: 500 }}>Unbound API Key</span>
-					</VSCodeTextField>
-					{!apiConfiguration?.unboundApiKey && (
-						<VSCodeButtonLink
-							href="https://gateway.getunbound.ai"
-							style={{ margin: "5px 0 0 0" }}
-							appearance="secondary">
-							Get Unbound API Key
-						</VSCodeButtonLink>
-					)}
-					<p
-						style={{
-							fontSize: "12px",
-							marginTop: 3,
-							color: "var(--vscode-descriptionForeground)",
-						}}>
-						This key is stored locally and only used to make API requests from this extension.
-					</p>
-				</div>
-			)}
-
-			{apiErrorMessage && (
-				<p
-					style={{
-						margin: "-10px 0 4px 0",
-						fontSize: 12,
-						color: "var(--vscode-errorForeground)",
-					}}>
-					{apiErrorMessage}
-				</p>
-			)}
-
-			{selectedProvider === "glama" && <GlamaModelPicker />}
-
-			{selectedProvider === "openrouter" && <OpenRouterModelPicker />}
-
 			{selectedProvider !== "glama" &&
 				selectedProvider !== "openrouter" &&
 				selectedProvider !== "openai" &&
@@ -1343,14 +859,9 @@ const ApiOptions = ({ apiErrorMessage, modelIdErrorMessage }: ApiOptionsProps) =
 							<label htmlFor="model-id">
 								<span style={{ fontWeight: 500 }}>Model</span>
 							</label>
-							{selectedProvider === "anthropic" && createDropdown(anthropicModels)}
-							{selectedProvider === "bedrock" && createDropdown(bedrockModels)}
-							{selectedProvider === "vertex" && createDropdown(vertexModels)}
-							{selectedProvider === "gemini" && createDropdown(geminiModels)}
-							{selectedProvider === "openai-native" && createDropdown(openAiNativeModels)}
+							{selectedProvider === "siliconflow" && createDropdown(siliconflowModels)}
+							{selectedProvider === "baidu" && createDropdown(baiduModels)}
 							{selectedProvider === "deepseek" && createDropdown(deepSeekModels)}
-							{selectedProvider === "mistral" && createDropdown(mistralModels)}
-							{selectedProvider === "unbound" && createDropdown(unboundModels)}
 						</div>
 
 						<ModelInfoView
@@ -1377,19 +888,19 @@ const ApiOptions = ({ apiErrorMessage, modelIdErrorMessage }: ApiOptionsProps) =
 }
 
 export function getGlamaAuthUrl(uriScheme?: string) {
-	const callbackUrl = `${uriScheme || "vscode"}://rooveterinaryinc.roo-cline/glama`
+	const callbackUrl = `${uriScheme || "vscode"}://rooveterinaryinc.roo-cline-besiege/glama`
 
 	return `https://glama.ai/oauth/authorize?callback_url=${encodeURIComponent(callbackUrl)}`
 }
 
 export function getOpenRouterAuthUrl(uriScheme?: string) {
-	return `https://openrouter.ai/auth?callback_url=${uriScheme || "vscode"}://rooveterinaryinc.roo-cline/openrouter`
+	return `https://openrouter.ai/auth?callback_url=${uriScheme || "vscode"}://rooveterinaryinc.roo-cline-besiege/openrouter`
 }
 
 export const formatPrice = (price: number) => {
 	return new Intl.NumberFormat("en-US", {
 		style: "currency",
-		currency: "USD",
+		currency: "YUN",
 		minimumFractionDigits: 2,
 		maximumFractionDigits: 2,
 	}).format(price)
@@ -1533,31 +1044,23 @@ export function normalizeApiConfiguration(apiConfiguration?: ApiConfiguration) {
 		return { selectedProvider: provider, selectedModelId, selectedModelInfo }
 	}
 	switch (provider) {
-		case "anthropic":
-			return getProviderData(anthropicModels, anthropicDefaultModelId)
-		case "bedrock":
-			return getProviderData(bedrockModels, bedrockDefaultModelId)
-		case "vertex":
-			return getProviderData(vertexModels, vertexDefaultModelId)
-		case "gemini":
-			return getProviderData(geminiModels, geminiDefaultModelId)
 		case "deepseek":
 			return getProviderData(deepSeekModels, deepSeekDefaultModelId)
-		case "openai-native":
-			return getProviderData(openAiNativeModels, openAiNativeDefaultModelId)
-		case "glama":
+		case "baidu":
+			return getProviderData(baiduModels, baiduDefaultModelId)
+		case "ctyun":
 			return {
 				selectedProvider: provider,
-				selectedModelId: apiConfiguration?.glamaModelId || glamaDefaultModelId,
-				selectedModelInfo: apiConfiguration?.glamaModelInfo || glamaDefaultModelInfo,
+				selectedModelId: apiConfiguration?.ctyunModelId || "",
+				selectedModelInfo: apiConfiguration?.openAiCustomModelInfo || openAiModelInfoSaneDefaults,
 			}
-		case "mistral":
-			return getProviderData(mistralModels, mistralDefaultModelId)
-		case "openrouter":
+		case "siliconflow":
+			return getProviderData(siliconflowModels, siliconflowDefaultModelId)
+		case "volcengine":
 			return {
 				selectedProvider: provider,
-				selectedModelId: apiConfiguration?.openRouterModelId || openRouterDefaultModelId,
-				selectedModelInfo: apiConfiguration?.openRouterModelInfo || openRouterDefaultModelInfo,
+				selectedModelId: apiConfiguration?.openAiModelId || "",
+				selectedModelInfo: apiConfiguration?.openAiCustomModelInfo || openAiModelInfoSaneDefaults,
 			}
 		case "openai":
 			return {
@@ -1571,25 +1074,6 @@ export function normalizeApiConfiguration(apiConfiguration?: ApiConfiguration) {
 				selectedModelId: apiConfiguration?.ollamaModelId || "",
 				selectedModelInfo: openAiModelInfoSaneDefaults,
 			}
-		case "lmstudio":
-			return {
-				selectedProvider: provider,
-				selectedModelId: apiConfiguration?.lmStudioModelId || "",
-				selectedModelInfo: openAiModelInfoSaneDefaults,
-			}
-		case "vscode-lm":
-			return {
-				selectedProvider: provider,
-				selectedModelId: apiConfiguration?.vsCodeLmModelSelector
-					? `${apiConfiguration.vsCodeLmModelSelector.vendor}/${apiConfiguration.vsCodeLmModelSelector.family}`
-					: "",
-				selectedModelInfo: {
-					...openAiModelInfoSaneDefaults,
-					supportsImages: false, // VSCode LM API currently doesn't support images
-				},
-			}
-		case "unbound":
-			return getProviderData(unboundModels, unboundDefaultModelId)
 		default:
 			return getProviderData(anthropicModels, anthropicDefaultModelId)
 	}

@@ -21,8 +21,8 @@ describe("checkExistKey", () => {
 	it("should return true when multiple keys are defined", () => {
 		const config: ApiConfiguration = {
 			apiKey: "test-key",
-			glamaApiKey: "glama-key",
-			openRouterApiKey: "openrouter-key",
+			ctyunApiKey: "glama-key",
+			volcengineApiKey: "openrouter-key",
 		}
 		expect(checkExistKey(config)).toBe(true)
 	})
@@ -39,18 +39,12 @@ describe("checkExistKey", () => {
 	it("should return false when all key fields are undefined", () => {
 		const config: ApiConfiguration = {
 			apiKey: undefined,
-			glamaApiKey: undefined,
-			openRouterApiKey: undefined,
-			awsRegion: undefined,
-			vertexProjectId: undefined,
+			ctyunApiKey: undefined,
+			volcengineApiKey: undefined,
 			openAiApiKey: undefined,
 			ollamaModelId: undefined,
-			lmStudioModelId: undefined,
-			geminiApiKey: undefined,
-			openAiNativeApiKey: undefined,
+			siliconflowApiKey: undefined,
 			deepSeekApiKey: undefined,
-			mistralApiKey: undefined,
-			vsCodeLmModelSelector: undefined,
 		}
 		expect(checkExistKey(config)).toBe(false)
 	})

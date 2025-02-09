@@ -20,12 +20,13 @@ let outputChannel: vscode.OutputChannel
 // This method is called when your extension is activated.
 // Your extension is activated the very first time the command is executed.
 export function activate(context: vscode.ExtensionContext) {
-	outputChannel = vscode.window.createOutputChannel("Roo-Code")
+	outputChannel = vscode.window.createOutputChannel("Roo-Code-Besiege")
 	context.subscriptions.push(outputChannel)
-	outputChannel.appendLine("Roo-Code extension activated")
+	outputChannel.appendLine("Roo-Code-Besiege extension activated")
 
 	// Get default commands from configuration.
-	const defaultCommands = vscode.workspace.getConfiguration("roo-cline").get<string[]>("allowedCommands") || []
+	const defaultCommands =
+		vscode.workspace.getConfiguration("roo-cline-besiege").get<string[]>("allowedCommands") || []
 
 	// Initialize global state if not already set.
 	if (!context.globalState.get("allowedCommands")) {
@@ -85,5 +86,5 @@ export function activate(context: vscode.ExtensionContext) {
 
 // This method is called when your extension is deactivated.
 export function deactivate() {
-	outputChannel.appendLine("Roo-Code extension deactivated")
+	outputChannel.appendLine("Roo-Code-Besiege extension deactivated")
 }

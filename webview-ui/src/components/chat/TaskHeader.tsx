@@ -99,15 +99,10 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({
 	}, [task.text, windowWidth])
 
 	const isCostAvailable = useMemo(() => {
-		return (
-			apiConfiguration?.apiProvider !== "openai" &&
-			apiConfiguration?.apiProvider !== "ollama" &&
-			apiConfiguration?.apiProvider !== "lmstudio" &&
-			apiConfiguration?.apiProvider !== "gemini"
-		)
+		return apiConfiguration?.apiProvider !== "openai" && apiConfiguration?.apiProvider !== "ollama"
 	}, [apiConfiguration?.apiProvider])
 
-	const shouldShowPromptCacheInfo = doesModelSupportPromptCache && apiConfiguration?.apiProvider !== "openrouter"
+	const shouldShowPromptCacheInfo = doesModelSupportPromptCache
 
 	return (
 		<div style={{ padding: "10px 13px 10px 13px" }}>

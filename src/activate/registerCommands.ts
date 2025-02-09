@@ -19,23 +19,23 @@ export const registerCommands = (options: RegisterCommandOptions) => {
 
 const getCommandsMap = ({ context, outputChannel, provider }: RegisterCommandOptions) => {
 	return {
-		"roo-cline.plusButtonClicked": async () => {
+		"roo-cline-besiege.plusButtonClicked": async () => {
 			await provider.clearTask()
 			await provider.postStateToWebview()
 			await provider.postMessageToWebview({ type: "action", action: "chatButtonClicked" })
 		},
-		"roo-cline.mcpButtonClicked": () => {
+		"roo-cline-besiege.mcpButtonClicked": () => {
 			provider.postMessageToWebview({ type: "action", action: "mcpButtonClicked" })
 		},
-		"roo-cline.promptsButtonClicked": () => {
+		"roo-cline-besiege.promptsButtonClicked": () => {
 			provider.postMessageToWebview({ type: "action", action: "promptsButtonClicked" })
 		},
-		"roo-cline.popoutButtonClicked": () => openClineInNewTab({ context, outputChannel }),
-		"roo-cline.openInNewTab": () => openClineInNewTab({ context, outputChannel }),
-		"roo-cline.settingsButtonClicked": () => {
+		"roo-cline-besiege.popoutButtonClicked": () => openClineInNewTab({ context, outputChannel }),
+		"roo-cline-besiege.openInNewTab": () => openClineInNewTab({ context, outputChannel }),
+		"roo-cline-besiege.settingsButtonClicked": () => {
 			provider.postMessageToWebview({ type: "action", action: "settingsButtonClicked" })
 		},
-		"roo-cline.historyButtonClicked": () => {
+		"roo-cline-besiege.historyButtonClicked": () => {
 			provider.postMessageToWebview({ type: "action", action: "historyButtonClicked" })
 		},
 	}
@@ -71,8 +71,8 @@ const openClineInNewTab = async ({ context, outputChannel }: Omit<RegisterComman
 	// TODO: use better svg icon with light and dark variants (see
 	// https://stackoverflow.com/questions/58365687/vscode-extension-iconpath).
 	panel.iconPath = {
-		light: vscode.Uri.joinPath(context.extensionUri, "assets", "icons", "rocket.png"),
-		dark: vscode.Uri.joinPath(context.extensionUri, "assets", "icons", "rocket.png"),
+		light: vscode.Uri.joinPath(context.extensionUri, "assets", "icons", "coffee.png"),
+		dark: vscode.Uri.joinPath(context.extensionUri, "assets", "icons", "coffee.png"),
 	}
 
 	await tabProvider.resolveWebviewView(panel)

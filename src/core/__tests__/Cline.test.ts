@@ -271,9 +271,9 @@ describe("Cline", () => {
 		// Setup mock provider with output channel
 		mockProvider = new ClineProvider(mockExtensionContext, mockOutputChannel) as jest.Mocked<ClineProvider>
 
-		// Setup mock API configuration
+		//Setup mock API configuration
 		mockApiConfig = {
-			apiProvider: "anthropic",
+			apiProvider: "deepseek",
 			apiModelId: "claude-3-5-sonnet-20241022",
 			apiKey: "test-api-key", // Add API key to mock config
 		}

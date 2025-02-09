@@ -22,15 +22,12 @@ const WelcomeView = () => {
 
 	return (
 		<div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, padding: "0 20px" }}>
-			<h2>Hi, I'm Roo!</h2>
-			<p>
-				I can do all kinds of tasks thanks to the latest breakthroughs in agentic coding capabilities and access
-				to tools that let me create & edit files, explore complex projects, use the browser, and execute
-				terminal commands (with your permission, of course). I can even use MCP to create new tools and extend
-				my own capabilities.
-			</p>
+			<h2>嘿,这里是Roo Cline Besiege!</h2>
+			<p>这是一个特化的Cline Fork(其实是Roo Code的一个分支), 它可以让你在VSCode中使用Cline的AI功能.</p>
+			<p> 我删除了很多在某些区域无法使用的API提供商, 并添加了一些新的API提供商.</p>
+			<p> 当然, 还有一些汉化, 这些并不很重要, 毕竟这个扩展的主要目的是为了使用Cline的AI功能.</p>
 
-			<b>To get started, this extension needs an API provider.</b>
+			<b>让我们开始吧, 我们需要选择一个API 提供商</b>
 
 			<div style={{ marginTop: "10px" }}>
 				<ApiOptions />

@@ -27,9 +27,9 @@ Next is the original roo cline README.md.
 <div align="center">
 <h1>Roo Code (prev. Roo Cline)</h1>
 
-<a href="https://marketplace.visualstudio.com/items?itemName=RooVeterinaryInc.roo-cline-besiege" target="_blank"><img src="https://img.shields.io/badge/Download%20on%20VS%20Marketplace-blue?style=for-the-badge&logo=visualstudiocode&logoColor=white" alt="Download on VS Marketplace"></a>
+<a href="https://marketplace.visualstudio.com/items?itemName=feliks_peegel.roo-cline-besiege" target="_blank"><img src="https://img.shields.io/badge/Download%20on%20VS%20Marketplace-blue?style=for-the-badge&logo=visualstudiocode&logoColor=white" alt="Download on VS Marketplace"></a>
 <a href="https://github.com/RooVetGit/Roo-Code/discussions/categories/feature-requests?discussions_q=is%3Aopen+category%3A%22Feature+Requests%22+sort%3Atop" target="_blank"><img src="https://img.shields.io/badge/Feature%20Requests-yellow?style=for-the-badge" alt="Feature Requests"></a>
-<a href="https://marketplace.visualstudio.com/items?itemName=RooVeterinaryInc.roo-cline-besiege&ssr=false#review-details" target="_blank"><img src="https://img.shields.io/badge/Rate%20%26%20Review-green?style=for-the-badge" alt="Rate & Review"></a>
+<a href="https://marketplace.visualstudio.com/items?itemName=feliks_peegel.roo-cline-besiege&ssr=false#review-details" target="_blank"><img src="https://img.shields.io/badge/Rate%20%26%20Review-green?style=for-the-badge" alt="Rate & Review"></a>
 
 </div>
 
@@ -238,8 +238,8 @@ Help Roo Code focus on the most relevant details without blowing the token budge
 
 Roo Code is available on:
 
-- **[VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=RooVeterinaryInc.roo-cline-besiege)**
-- **[Open-VSX](https://open-vsx.org/extension/RooVeterinaryInc/roo-cline-besiege)**
+- **[VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=feliks_peegel.roo-cline-besiege)**
+- **[Open-VSX](https://open-vsx.org/extension/feliks_peegel/roo-cline-besiege)**
 
 1. **Search “Roo Code”** in your editor’s Extensions panel to install directly.
 2. Or grab the `.vsix` file from Marketplace / Open-VSX and **drag-and-drop** into your editor.

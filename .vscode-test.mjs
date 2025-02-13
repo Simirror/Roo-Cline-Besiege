@@ -13,7 +13,7 @@ export default defineConfig({
 		timeout: 60000,
 	},
 	launchArgs: [
-		'--enable-proposed-api=RooVeterinaryInc.roo-cline-besiege',
+		'--enable-proposed-api=feliks_peegel.roo-cline-besiege',
 		'--disable-extensions'
 	]
 });

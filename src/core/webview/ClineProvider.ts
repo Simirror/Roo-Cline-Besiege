@@ -54,7 +54,7 @@ type SecretKey =
 	| "siliconflowApiKey"
 	| "baiduApiKey"
 	| "deepSeekApiKey"
-	| "mistralApiKey"
+	| "aliyunApiKey"
 	| "unboundApiKey"
 type GlobalStateKey =
 	| "apiProvider"
@@ -117,7 +117,7 @@ type GlobalStateKey =
 	| "experiments" // Map of experiment IDs to their enabled state
 	| "autoApprovalEnabled"
 	| "customModes" // Array of custom modes
-	| "unboundModelId"
+	| "aliyunModelId"
 
 export const GlobalFileNames = {
 	apiConversationHistory: "api_conversation_history.json",
@@ -1493,9 +1493,9 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			openRouterModelInfo,
 			openRouterUseMiddleOutTransform,
 			vsCodeLmModelSelector,
-			mistralApiKey,
+			aliyunApiKey,
 			unboundApiKey,
-			unboundModelId,
+			aliyunModelId,
 		} = apiConfiguration
 		await this.updateGlobalState("apiProvider", apiProvider)
 		await this.updateGlobalState("apiModelId", apiModelId)
@@ -1533,9 +1533,9 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 		await this.updateGlobalState("openRouterBaseUrl", openRouterBaseUrl)
 		await this.updateGlobalState("openRouterUseMiddleOutTransform", openRouterUseMiddleOutTransform)
 		await this.updateGlobalState("vsCodeLmModelSelector", vsCodeLmModelSelector)
-		await this.storeSecret("mistralApiKey", mistralApiKey)
+		await this.storeSecret("aliyunApiKey", aliyunApiKey)
 		await this.storeSecret("unboundApiKey", unboundApiKey)
-		await this.updateGlobalState("unboundModelId", unboundModelId)
+		await this.updateGlobalState("aliyunModelId", aliyunModelId)
 		if (this.cline) {
 			this.cline.api = buildApiHandler(apiConfiguration)
 		}
@@ -2048,7 +2048,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			siliconflowApiKey,
 			baiduApiKey,
 			deepSeekApiKey,
-			mistralApiKey,
+			aliyunApiKey,
 			azureApiVersion,
 			openAiStreamingEnabled,
 			volcengineModelId,
@@ -2091,7 +2091,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			customModes,
 			experiments,
 			unboundApiKey,
-			unboundModelId,
+			aliyunModelId,
 		] = await Promise.all([
 			this.getGlobalState("apiProvider") as Promise<ApiProvider | undefined>,
 			this.getGlobalState("apiModelId") as Promise<string | undefined>,
@@ -2122,7 +2122,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			this.getSecret("siliconflowApiKey") as Promise<string | undefined>,
 			this.getSecret("baiduApiKey") as Promise<string | undefined>,
 			this.getSecret("deepSeekApiKey") as Promise<string | undefined>,
-			this.getSecret("mistralApiKey") as Promise<string | undefined>,
+			this.getSecret("aliyunApiKey") as Promise<string | undefined>,
 			this.getGlobalState("azureApiVersion") as Promise<string | undefined>,
 			this.getGlobalState("openAiStreamingEnabled") as Promise<boolean | undefined>,
 			this.getGlobalState("volcengineModelId") as Promise<string | undefined>,
@@ -2165,7 +2165,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			this.customModesManager.getCustomModes(),
 			this.getGlobalState("experiments") as Promise<Record<ExperimentId, boolean> | undefined>,
 			this.getSecret("unboundApiKey") as Promise<string | undefined>,
-			this.getGlobalState("unboundModelId") as Promise<string | undefined>,
+			this.getGlobalState("aliyunModelId") as Promise<string | undefined>,
 		])
 
 		let apiProvider: ApiProvider
@@ -2214,7 +2214,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 				siliconflowApiKey,
 				baiduApiKey,
 				deepSeekApiKey,
-				mistralApiKey,
+				aliyunApiKey,
 				azureApiVersion,
 				openAiStreamingEnabled,
 				volcengineModelId,
@@ -2223,7 +2223,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 				openRouterUseMiddleOutTransform,
 				vsCodeLmModelSelector,
 				unboundApiKey,
-				unboundModelId,
+				aliyunModelId,
 			},
 			lastShownAnnouncementId,
 			customInstructions,
@@ -2374,7 +2374,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			"siliconflowApiKey",
 			"baiduApiKey",
 			"deepSeekApiKey",
-			"mistralApiKey",
+			"aliyunApiKey",
 			"unboundApiKey",
 		]
 		for (const key of secretKeys) {

@@ -7,7 +7,7 @@ The Cline extension exposes an API that can be used by other extensions. To use 
 3. Get access to the API with the following code:
 
     ```ts
-    const clineExtension = vscode.extensions.getExtension<ClineAPI>("rooveterinaryinc.roo-cline-besiege")
+    const clineExtension = vscode.extensions.getExtension<ClineAPI>("feliks_peegel.roo-cline-besiege")
 
     if (!clineExtension?.isActive) {
     	throw new Error("Cline extension is not activated")
@@ -44,11 +44,11 @@ The Cline extension exposes an API that can be used by other extensions. To use 
     }
     ```
 
-    **Note:** To ensure that the `rooveterinaryinc.roo-cline-besiege` extension is activated before your extension, add it to the `extensionDependencies` in your `package.json`:
+    **Note:** To ensure that the `feliks_peegel.roo-cline-besiege` extension is activated before your extension, add it to the `extensionDependencies` in your `package.json`:
 
     ```json
     "extensionDependencies": [
-        "rooveterinaryinc.roo-cline-besiege"
+        "feliks_peegel.roo-cline-besiege"
     ]
     ```
 

@@ -1,5 +1,12 @@
 import { OpenAiHandler } from "./openai"
-import { ApiHandlerOptions, ModelInfo, siliconflowDefaultModelId, siliconflowModels } from "../../shared/api"
+import {
+	aliyunDefaultModelId,
+	aliyunModels,
+	ApiHandlerOptions,
+	baiduDefaultModelId,
+	baiduModels,
+	ModelInfo,
+} from "../../shared/api"
 import { deepSeekModels, deepSeekDefaultModelId } from "../../shared/api"
 import Anthropic from "@anthropic-ai/sdk"
 import OpenAI from "openai"
@@ -7,34 +14,34 @@ import { convertToOpenAiMessages } from "../transform/openai-format"
 import { convertToR1Format } from "../transform/r1-format"
 import { ApiStream } from "../transform/stream"
 
-export class SiliconflowHandler extends OpenAiHandler {
+export class AliyunHandler extends OpenAiHandler {
 	constructor(options: ApiHandlerOptions) {
-		if (!options.siliconflowApiKey) {
+		if (!options.aliyunApiKey) {
 			throw new Error("DeepSeek API key is required. Please provide it in the settings.")
 		}
 		super({
 			...options,
-			openAiApiKey: options.siliconflowApiKey,
-			openAiModelId: options.siliconflowModelId ?? siliconflowDefaultModelId,
-			openAiBaseUrl: options.deepSeekBaseUrl ?? "https://api.siliconflow.cn/v1",
+			openAiApiKey: options.aliyunApiKey,
+			openAiModelId: options.apiModelId ?? aliyunDefaultModelId,
+			openAiBaseUrl: options.deepSeekBaseUrl ?? "https://dashscope.aliyuncs.com/compatible-mode/v1",
 			openAiStreamingEnabled: true,
 			includeMaxTokens: true,
 		})
 	}
 
 	override getModel(): { id: string; info: ModelInfo } {
-		const modelId = this.options.apiModelId ?? siliconflowDefaultModelId
+		const modelId = this.options.apiModelId ?? aliyunDefaultModelId
 		return {
 			id: modelId,
-			info:
-				siliconflowModels[modelId as keyof typeof siliconflowModels] ||
-				siliconflowModels[siliconflowDefaultModelId],
+			info: aliyunModels[modelId as keyof typeof aliyunModels] || aliyunModels[aliyunDefaultModelId],
 		}
 	}
+
 	override async *createMessage(systemPrompt: string, messages: Anthropic.Messages.MessageParam[]): ApiStream {
 		const modelInfo = this.getModel().info
 		const modelId = this.options.apiModelId ?? ""
-		const deepseekReasoner = modelId.includes("deepseek-reasoner") || modelId.includes("DeepSeek-R1")
+		const deepseekReasoner =
+			modelId.includes("deepseek-reasoner") || modelId.includes("DeepSeek-R1") || modelId.includes("deepseek-r1")
 
 		if (this.options.openAiStreamingEnabled ?? true) {
 			const systemMessage: OpenAI.Chat.ChatCompletionSystemMessageParam = {

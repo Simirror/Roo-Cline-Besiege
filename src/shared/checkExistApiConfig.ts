@@ -15,7 +15,7 @@ export function checkExistKey(config: ApiConfiguration | undefined) {
 				config.siliconflowApiKey,
 				config.baiduApiKey,
 				config.deepSeekApiKey,
-				config.mistralApiKey,
+				config.aliyunApiKey,
 				config.vsCodeLmModelSelector,
 			].some((key) => key !== undefined)
 		: false

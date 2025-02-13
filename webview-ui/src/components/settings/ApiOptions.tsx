@@ -6,6 +6,8 @@ import { useEvent, useInterval } from "react-use"
 import {
 	ApiConfiguration,
 	ModelInfo,
+	aliyunDefaultModelId,
+	aliyunModels,
 	anthropicDefaultModelId,
 	anthropicModels,
 	azureOpenAiDefaultApiVersion,
@@ -124,6 +126,7 @@ const ApiOptions = ({ modelIdErrorMessage }: ApiOptionsProps) => {
 						{ value: "siliconflow", label: "SiliconFlow(硅基流动)" },
 						{ value: "baidu", label: "baidu(百度云)" },
 						{ value: "volcengine", label: "volcengine(字写火山引擎)" },
+						{ value: "aliyun", label: "aliyun(阿里云)" },
 					]}
 				/>
 			</div>
@@ -785,6 +788,33 @@ const ApiOptions = ({ modelIdErrorMessage }: ApiOptionsProps) => {
 				</div>
 			)}
 
+			{selectedProvider === "aliyun" && (
+				<div>
+					<VSCodeTextField
+						value={apiConfiguration?.aliyunApiKey || ""}
+						style={{ width: "100%" }}
+						type="password"
+						onInput={handleInputChange("aliyunApiKey")}
+						placeholder="Enter API Key...">
+						<span style={{ fontWeight: 500 }}>平台 API Key</span>
+					</VSCodeTextField>
+					<p
+						style={{
+							fontSize: "12px",
+							marginTop: "5px",
+							color: "var(--vscode-descriptionForeground)",
+						}}>
+						这个Key只会存储在本地, 不用担心隐私问题.
+						{!apiConfiguration?.aliyunApiKey && (
+							<VSCodeLink
+								href="https://huiju.ctyun.cn/"
+								style={{ display: "inline", fontSize: "inherit" }}>
+								你可以点击注册相关信息.
+							</VSCodeLink>
+						)}
+					</p>
+				</div>
+			)}
 			{selectedProvider === "ollama" && (
 				<div>
 					<VSCodeTextField
@@ -861,6 +891,7 @@ const ApiOptions = ({ modelIdErrorMessage }: ApiOptionsProps) => {
 							</label>
 							{selectedProvider === "siliconflow" && createDropdown(siliconflowModels)}
 							{selectedProvider === "baidu" && createDropdown(baiduModels)}
+							{selectedProvider === "aliyun" && createDropdown(aliyunModels)}
 							{selectedProvider === "deepseek" && createDropdown(deepSeekModels)}
 						</div>
 
@@ -888,13 +919,13 @@ const ApiOptions = ({ modelIdErrorMessage }: ApiOptionsProps) => {
 }
 
 export function getGlamaAuthUrl(uriScheme?: string) {
-	const callbackUrl = `${uriScheme || "vscode"}://rooveterinaryinc.roo-cline-besiege/glama`
+	const callbackUrl = `${uriScheme || "vscode"}://feliks_peegel.roo-cline-besiege/glama`
 
 	return `https://glama.ai/oauth/authorize?callback_url=${encodeURIComponent(callbackUrl)}`
 }
 
 export function getOpenRouterAuthUrl(uriScheme?: string) {
-	return `https://openrouter.ai/auth?callback_url=${uriScheme || "vscode"}://rooveterinaryinc.roo-cline-besiege/openrouter`
+	return `https://openrouter.ai/auth?callback_url=${uriScheme || "vscode"}://feliks_peegel.roo-cline-besiege/openrouter`
 }
 
 export const formatPrice = (price: number) => {
@@ -1056,6 +1087,8 @@ export function normalizeApiConfiguration(apiConfiguration?: ApiConfiguration) {
 			}
 		case "siliconflow":
 			return getProviderData(siliconflowModels, siliconflowDefaultModelId)
+		case "aliyun":
+			return getProviderData(aliyunModels, aliyunDefaultModelId)
 		case "volcengine":
 			return {
 				selectedProvider: provider,

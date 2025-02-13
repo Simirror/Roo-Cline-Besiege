@@ -10,6 +10,7 @@ import { SiliconflowHandler } from "./providers/siliconflow"
 import { VolcengineHandler } from "./providers/volcengine"
 import { BaiduHandler } from "./providers/baidu"
 import { CtyunHandler } from "./providers/ctyun"
+import { AliyunHandler } from "./providers/aliyun"
 
 export interface SingleCompletionHandler {
 	completePrompt(prompt: string): Promise<string>
@@ -29,6 +30,8 @@ export function buildApiHandler(configuration: ApiConfiguration): ApiHandler {
 			return new OllamaHandler(options)
 		case "deepseek":
 			return new DeepSeekHandler(options)
+		case "aliyun":
+			return new AliyunHandler(options)
 		case "ctyun":
 			return new CtyunHandler(options)
 		case "baidu":

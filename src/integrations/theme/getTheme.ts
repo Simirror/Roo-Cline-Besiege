@@ -141,5 +141,5 @@ export function mergeJson(
 }
 
 function getExtensionUri(): vscode.Uri {
-	return vscode.extensions.getExtension("rooveterinaryinc.roo-cline-besiege")!.extensionUri
+	return vscode.extensions.getExtension("feliks_peegel.roo-cline-besiege")!.extensionUri
 }

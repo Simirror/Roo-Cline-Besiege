@@ -1,6 +1,6 @@
 import * as vscode from "vscode"
 
-export type ApiProvider = "openai" | "ollama" | "deepseek" | "ctyun" | "volcengine" | "baidu" | "siliconflow"
+export type ApiProvider = "openai" | "ollama" | "deepseek" | "ctyun" | "volcengine" | "baidu" | "siliconflow" | "aliyun"
 
 export interface ApiHandlerOptions {
 	apiModelId?: string
@@ -35,7 +35,7 @@ export interface ApiHandlerOptions {
 	lmStudioBaseUrl?: string
 	siliconflowApiKey?: string
 	baiduApiKey?: string
-	mistralApiKey?: string
+	aliyunApiKey?: string
 	azureApiVersion?: string
 	openRouterUseMiddleOutTransform?: boolean
 	openAiStreamingEnabled?: boolean
@@ -50,7 +50,7 @@ export interface ApiHandlerOptions {
 	ctyunModelId?: string
 	includeMaxTokens?: boolean
 	unboundApiKey?: string
-	unboundModelId?: string
+	aliyunModelId?: string
 }
 
 export type ApiConfiguration = ApiHandlerOptions & {
@@ -669,6 +669,31 @@ export const baiduModels = {
 		description: `DeepSeek-R1 achieves performance comparable to OpenAI-o1 across math, code, and reasoning tasks.`,
 	},
 } as const satisfies Record<string, ModelInfo>
+
+// Aliyun
+// https://docs.siliconflow.cn/api-reference
+export type AliyunModelId = keyof typeof aliyunModels
+export const aliyunDefaultModelId: AliyunModelId = "deepseek-v3"
+export const aliyunModels = {
+	"deepseek-v3": {
+		maxTokens: 4096,
+		contextWindow: 64_000,
+		supportsImages: false,
+		supportsPromptCache: false,
+		inputPrice: 0.014, // $0.014 per million tokens
+		outputPrice: 0.28, // $0.28 per million tokens
+		description: `DeepSeek-V3 achieves a significant breakthrough in inference speed over previous models. It tops the leaderboard among open-source models and rivals the most advanced closed-source models globally.`,
+	},
+	"deepseek-r1": {
+		maxTokens: 4096,
+		contextWindow: 64_000,
+		supportsImages: false,
+		supportsPromptCache: false,
+		inputPrice: 0.55, // $0.55 per million tokens
+		outputPrice: 2.19, // $2.19 per million tokens
+		description: `DeepSeek-R1 achieves performance comparable to OpenAI-o1 across math, code, and reasoning tasks.`,
+	},
+} as const satisfies Record<string, ModelInfo>
 // Azure OpenAI
 // https://learn.microsoft.com/en-us/azure/ai-services/openai/api-version-deprecation
 // https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#api-specs
@@ -690,7 +715,7 @@ export const mistralModels = {
 } as const satisfies Record<string, ModelInfo>
 
 // Unbound Security
-export type UnboundModelId = keyof typeof unboundModels
+export type aliyunModelId = keyof typeof unboundModels
 export const unboundDefaultModelId = "openai/gpt-4o"
 export const unboundModels = {
 	"anthropic/claude-3-5-sonnet-20241022": anthropicModels["claude-3-5-sonnet-20241022"],

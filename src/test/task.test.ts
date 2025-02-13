@@ -9,7 +9,7 @@ suite("Roo Code Task", () => {
 		const timeout = 30000
 		const interval = 1000
 
-		const extension = vscode.extensions.getExtension("RooVeterinaryInc.roo-cline-besiege")
+		const extension = vscode.extensions.getExtension("feliks_peegel.roo-cline-besiege")
 
 		if (!extension) {
 			assert.fail("Extension not found")

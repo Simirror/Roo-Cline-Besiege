@@ -19,6 +19,8 @@ import {
 	openAiModelInfoSaneDefaults,
 	siliconflowDefaultModelId,
 	siliconflowModels,
+	tencentDefaultModelId,
+	tencentModels,
 } from "../../../../src/shared/api"
 import { ExtensionMessage } from "../../../../src/shared/ExtensionMessage"
 import { useExtensionState } from "../../context/ExtensionStateContext"
@@ -26,6 +28,8 @@ import { vscode } from "../../utils/vscode"
 
 import { ModelDescriptionMarkdown, OPENROUTER_MODEL_PICKER_Z_INDEX } from "./OpenRouterModelPicker"
 import OpenAiModelPicker from "./OpenAiModelPicker"
+import { Trans } from "react-i18next"
+import { t } from "i18next"
 
 interface ApiOptionsProps {
 	apiErrorMessage?: string
@@ -98,11 +102,272 @@ const ApiOptions = ({ modelIdErrorMessage }: ApiOptionsProps) => {
 		)
 	}
 
+	const silicon_flow_options = (
+		<div>
+			<VSCodeTextField
+				value={apiConfiguration?.siliconflowApiKey || ""}
+				style={{ width: "100%" }}
+				type="password"
+				onInput={handleInputChange("siliconflowApiKey")}
+				placeholder="Enter API Key...">
+				<span style={{ fontWeight: 500 }}>Siliconflow API Key</span>
+			</VSCodeTextField>
+			<p
+				style={{
+					fontSize: "12px",
+					marginTop: "5px",
+					color: "var(--vscode-descriptionForeground)",
+				}}>
+				<Trans>{t("provider.keyprivacy")}</Trans>
+				{!apiConfiguration?.siliconflowApiKey && (
+					<VSCodeLink
+						href="https://cloud.siliconflow.cn/account/ak/"
+						style={{ display: "inline", fontSize: "inherit" }}>
+						你可以点击注册相关信息.
+					</VSCodeLink>
+				)}
+			</p>
+		</div>
+	)
+	const deepseek_options = (
+		<div>
+			<VSCodeTextField
+				value={apiConfiguration?.deepSeekApiKey || ""}
+				style={{ width: "100%" }}
+				type="password"
+				onInput={handleInputChange("deepSeekApiKey")}
+				placeholder="Enter API Key...">
+				<span style={{ fontWeight: 500 }}>DeepSeek API Key</span>
+			</VSCodeTextField>
+			<p
+				style={{
+					fontSize: "12px",
+					marginTop: "5px",
+					color: "var(--vscode-descriptionForeground)",
+				}}>
+				<Trans>{t("provider.keyprivacy")}</Trans>
+				{!apiConfiguration?.deepSeekApiKey && (
+					<VSCodeLink
+						href="https://platform.deepseek.com/"
+						style={{ display: "inline", fontSize: "inherit" }}>
+						You can get a DeepSeek API key by signing up here.
+					</VSCodeLink>
+				)}
+			</p>
+		</div>
+	)
+	const baidu_options = (
+		<div>
+			<VSCodeTextField
+				value={apiConfiguration?.baiduApiKey || ""}
+				style={{ width: "100%" }}
+				type="password"
+				onInput={handleInputChange("baiduApiKey")}
+				placeholder="Enter API Key...">
+				<span style={{ fontWeight: 500 }}>Siliconflow API Key</span>
+			</VSCodeTextField>
+			<p
+				style={{
+					fontSize: "12px",
+					marginTop: "5px",
+					color: "var(--vscode-descriptionForeground)",
+				}}>
+				<Trans>{t("provider.keyprivacy")}</Trans>
+				{!apiConfiguration?.baiduApiKey && (
+					<VSCodeLink
+						href="https://cloud.siliconflow.cn/account/ak/"
+						style={{ display: "inline", fontSize: "inherit" }}>
+						你可以点击注册相关信息.
+					</VSCodeLink>
+				)}
+			</p>
+		</div>
+	)
+	const ctyun_options = (
+		<div>
+			<VSCodeTextField
+				value={apiConfiguration?.ctyunApiKey || ""}
+				style={{ width: "100%" }}
+				type="password"
+				onInput={handleInputChange("ctyunApiKey")}
+				placeholder="Enter API Key...">
+				<span style={{ fontWeight: 500 }}>平台 API Key</span>
+			</VSCodeTextField>
+			<p
+				style={{
+					fontSize: "12px",
+					marginTop: "5px",
+					color: "var(--vscode-descriptionForeground)",
+				}}>
+				<Trans>{t("provider.keyprivacy")}</Trans>
+				{!apiConfiguration?.ctyunApiKey && (
+					<VSCodeLink href="https://huiju.ctyun.cn/" style={{ display: "inline", fontSize: "inherit" }}>
+						你可以点击注册相关信息.
+					</VSCodeLink>
+				)}
+			</p>
+			<VSCodeTextField
+				value={apiConfiguration?.ctyunModelId || ""}
+				style={{ width: "100%" }}
+				onInput={handleInputChange("ctyunModelId")}
+				placeholder={"e.g. llama3.1"}>
+				<span style={{ fontWeight: 500 }}>Model ID</span>
+			</VSCodeTextField>
+			目前仅支持DeepSeek-R1模型.
+		</div>
+	)
+	const volcengine_options = (
+		<div>
+			<VSCodeTextField
+				value={apiConfiguration?.volcengineApiKey || ""}
+				style={{ width: "100%" }}
+				type="password"
+				onInput={handleInputChange("volcengineApiKey")}
+				placeholder="Enter API Key...">
+				<span style={{ fontWeight: 500 }}>平台 API Key</span>
+			</VSCodeTextField>
+			<p
+				style={{
+					fontSize: "12px",
+					marginTop: "5px",
+					color: "var(--vscode-descriptionForeground)",
+				}}>
+				<Trans>{t("provider.keyprivacy")}</Trans>
+				{!apiConfiguration?.volcengineApiKey && (
+					<VSCodeLink href="https://huiju.ctyun.cn/" style={{ display: "inline", fontSize: "inherit" }}>
+						你可以点击注册相关信息.
+					</VSCodeLink>
+				)}
+			</p>
+			<VSCodeTextField
+				value={apiConfiguration?.volcengineModelId || ""}
+				style={{ width: "100%" }}
+				onInput={handleInputChange("volcengineModelId")}
+				placeholder={"e.g. llama3.1"}>
+				<span style={{ fontWeight: 500 }}>Model ID</span>
+			</VSCodeTextField>
+			目前仅支持DeepSeek-R1模型.
+		</div>
+	)
+	const aliyun_options = (
+		<div>
+			<VSCodeTextField
+				value={apiConfiguration?.aliyunApiKey || ""}
+				style={{ width: "100%" }}
+				type="password"
+				onInput={handleInputChange("aliyunApiKey")}
+				placeholder="Enter API Key...">
+				<span style={{ fontWeight: 500 }}>平台 API Key</span>
+			</VSCodeTextField>
+			<p
+				style={{
+					fontSize: "12px",
+					marginTop: "5px",
+					color: "var(--vscode-descriptionForeground)",
+				}}>
+				<Trans>{t("provider.keyprivacy")}</Trans>
+				{!apiConfiguration?.aliyunApiKey && (
+					<VSCodeLink href="https://huiju.ctyun.cn/" style={{ display: "inline", fontSize: "inherit" }}>
+						你可以点击注册相关信息.
+					</VSCodeLink>
+				)}
+			</p>
+		</div>
+	)
+	const tencent_options = (
+		<div>
+			<VSCodeTextField
+				value={apiConfiguration?.tencentApiKey || ""}
+				style={{ width: "100%" }}
+				type="password"
+				onInput={handleInputChange("tencentApiKey")}
+				placeholder="Enter API Key...">
+				<span style={{ fontWeight: 500 }}>平台 API Key</span>
+			</VSCodeTextField>
+			<p
+				style={{
+					fontSize: "12px",
+					marginTop: "5px",
+					color: "var(--vscode-descriptionForeground)",
+				}}>
+				<Trans>{t("provider.keyprivacy")}</Trans>
+				{!apiConfiguration?.tencentApiKey && (
+					<VSCodeLink
+						href="https://cloud.tencent.com/act/pro/deepseek-api"
+						style={{ display: "inline", fontSize: "inherit" }}>
+						你可以点击注册相关信息.
+					</VSCodeLink>
+				)}
+			</p>
+		</div>
+	)
+	const ollama_options = (
+		<div>
+			<VSCodeTextField
+				value={apiConfiguration?.ollamaBaseUrl || ""}
+				style={{ width: "100%" }}
+				type="url"
+				onInput={handleInputChange("ollamaBaseUrl")}
+				placeholder={"Default: http://localhost:11434"}>
+				<span style={{ fontWeight: 500 }}>Base URL (optional)</span>
+			</VSCodeTextField>
+			<VSCodeTextField
+				value={apiConfiguration?.ollamaModelId || ""}
+				style={{ width: "100%" }}
+				onInput={handleInputChange("ollamaModelId")}
+				placeholder={"e.g. llama3.1"}>
+				<span style={{ fontWeight: 500 }}>Model ID</span>
+			</VSCodeTextField>
+			{ollamaModels.length > 0 && (
+				<VSCodeRadioGroup
+					value={
+						ollamaModels.includes(apiConfiguration?.ollamaModelId || "")
+							? apiConfiguration?.ollamaModelId
+							: ""
+					}
+					onChange={(e) => {
+						const value = (e.target as HTMLInputElement)?.value
+						// need to check value first since radio group returns empty string sometimes
+						if (value) {
+							handleInputChange("ollamaModelId")({
+								target: { value },
+							})
+						}
+					}}>
+					{ollamaModels.map((model) => (
+						<VSCodeRadio key={model} value={model} checked={apiConfiguration?.ollamaModelId === model}>
+							{model}
+						</VSCodeRadio>
+					))}
+				</VSCodeRadioGroup>
+			)}
+			<p
+				style={{
+					fontSize: "12px",
+					marginTop: "5px",
+					color: "var(--vscode-descriptionForeground)",
+				}}>
+				Ollama allows you to run models locally on your computer. For instructions on how to get started, see
+				their
+				<VSCodeLink
+					href="https://github.com/ollama/ollama/blob/main/README.md"
+					style={{ display: "inline", fontSize: "inherit" }}>
+					quickstart guide.
+				</VSCodeLink>
+				<span style={{ color: "var(--vscode-errorForeground)" }}>
+					(<span style={{ fontWeight: 500 }}>Note:</span> Roo Code uses complex prompts and works best with
+					Claude models. Less capable models may not work as expected.)
+				</span>
+			</p>
+		</div>
+	)
 	return (
 		<div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
 			<div className="dropdown-container">
 				<label htmlFor="api-provider">
-					<span style={{ fontWeight: 500 }}>API 提供商</span>
+					<span style={{ fontWeight: 500 }}>
+						<Trans>{t("settings.apiProvider")}</Trans>
+					</span>
 				</label>
 				<Dropdown
 					id="api-provider"
@@ -127,6 +392,7 @@ const ApiOptions = ({ modelIdErrorMessage }: ApiOptionsProps) => {
 						{ value: "baidu", label: "baidu(百度云)" },
 						{ value: "volcengine", label: "volcengine(字写火山引擎)" },
 						{ value: "aliyun", label: "aliyun(阿里云)" },
+						{ value: "tencent", label: "tencent(腾讯云)" },
 					]}
 				/>
 			</div>
@@ -632,252 +898,19 @@ const ApiOptions = ({ modelIdErrorMessage }: ApiOptionsProps) => {
 				</div>
 			)}
 
-			{selectedProvider === "deepseek" && (
-				<div>
-					<VSCodeTextField
-						value={apiConfiguration?.deepSeekApiKey || ""}
-						style={{ width: "100%" }}
-						type="password"
-						onInput={handleInputChange("deepSeekApiKey")}
-						placeholder="Enter API Key...">
-						<span style={{ fontWeight: 500 }}>DeepSeek API Key</span>
-					</VSCodeTextField>
-					<p
-						style={{
-							fontSize: "12px",
-							marginTop: "5px",
-							color: "var(--vscode-descriptionForeground)",
-						}}>
-						This key is stored locally and only used to make API requests from this extension.
-						{!apiConfiguration?.deepSeekApiKey && (
-							<VSCodeLink
-								href="https://platform.deepseek.com/"
-								style={{ display: "inline", fontSize: "inherit" }}>
-								You can get a DeepSeek API key by signing up here.
-							</VSCodeLink>
-						)}
-					</p>
-				</div>
-			)}
+			{selectedProvider === "deepseek" && deepseek_options}
 
-			{selectedProvider === "siliconflow" && (
-				<div>
-					<VSCodeTextField
-						value={apiConfiguration?.siliconflowApiKey || ""}
-						style={{ width: "100%" }}
-						type="password"
-						onInput={handleInputChange("siliconflowApiKey")}
-						placeholder="Enter API Key...">
-						<span style={{ fontWeight: 500 }}>Siliconflow API Key</span>
-					</VSCodeTextField>
-					<p
-						style={{
-							fontSize: "12px",
-							marginTop: "5px",
-							color: "var(--vscode-descriptionForeground)",
-						}}>
-						这个Key只会存储在本地, 不用担心隐私问题.
-						{!apiConfiguration?.siliconflowApiKey && (
-							<VSCodeLink
-								href="https://cloud.siliconflow.cn/account/ak/"
-								style={{ display: "inline", fontSize: "inherit" }}>
-								你可以点击注册相关信息.
-							</VSCodeLink>
-						)}
-					</p>
-				</div>
-			)}
+			{selectedProvider === "siliconflow" && silicon_flow_options}
 
-			{selectedProvider === "baidu" && (
-				<div>
-					<VSCodeTextField
-						value={apiConfiguration?.baiduApiKey || ""}
-						style={{ width: "100%" }}
-						type="password"
-						onInput={handleInputChange("baiduApiKey")}
-						placeholder="Enter API Key...">
-						<span style={{ fontWeight: 500 }}>Siliconflow API Key</span>
-					</VSCodeTextField>
-					<p
-						style={{
-							fontSize: "12px",
-							marginTop: "5px",
-							color: "var(--vscode-descriptionForeground)",
-						}}>
-						这个Key只会存储在本地, 不用担心隐私问题.
-						{!apiConfiguration?.baiduApiKey && (
-							<VSCodeLink
-								href="https://cloud.siliconflow.cn/account/ak/"
-								style={{ display: "inline", fontSize: "inherit" }}>
-								你可以点击注册相关信息.
-							</VSCodeLink>
-						)}
-					</p>
-				</div>
-			)}
+			{selectedProvider === "baidu" && baidu_options}
 
-			{selectedProvider === "ctyun" && (
-				<div>
-					<VSCodeTextField
-						value={apiConfiguration?.ctyunApiKey || ""}
-						style={{ width: "100%" }}
-						type="password"
-						onInput={handleInputChange("ctyunApiKey")}
-						placeholder="Enter API Key...">
-						<span style={{ fontWeight: 500 }}>平台 API Key</span>
-					</VSCodeTextField>
-					<p
-						style={{
-							fontSize: "12px",
-							marginTop: "5px",
-							color: "var(--vscode-descriptionForeground)",
-						}}>
-						这个Key只会存储在本地, 不用担心隐私问题.
-						{!apiConfiguration?.ctyunApiKey && (
-							<VSCodeLink
-								href="https://huiju.ctyun.cn/"
-								style={{ display: "inline", fontSize: "inherit" }}>
-								你可以点击注册相关信息.
-							</VSCodeLink>
-						)}
-					</p>
-					<VSCodeTextField
-						value={apiConfiguration?.ctyunModelId || ""}
-						style={{ width: "100%" }}
-						onInput={handleInputChange("ctyunModelId")}
-						placeholder={"e.g. llama3.1"}>
-						<span style={{ fontWeight: 500 }}>Model ID</span>
-					</VSCodeTextField>
-					目前仅支持DeepSeek-R1模型.
-				</div>
-			)}
+			{selectedProvider === "ctyun" && ctyun_options}
 
-			{selectedProvider === "volcengine" && (
-				<div>
-					<VSCodeTextField
-						value={apiConfiguration?.volcengineApiKey || ""}
-						style={{ width: "100%" }}
-						type="password"
-						onInput={handleInputChange("volcengineApiKey")}
-						placeholder="Enter API Key...">
-						<span style={{ fontWeight: 500 }}>平台 API Key</span>
-					</VSCodeTextField>
-					<p
-						style={{
-							fontSize: "12px",
-							marginTop: "5px",
-							color: "var(--vscode-descriptionForeground)",
-						}}>
-						这个Key只会存储在本地, 不用担心隐私问题.
-						{!apiConfiguration?.volcengineApiKey && (
-							<VSCodeLink
-								href="https://huiju.ctyun.cn/"
-								style={{ display: "inline", fontSize: "inherit" }}>
-								你可以点击注册相关信息.
-							</VSCodeLink>
-						)}
-					</p>
-					<VSCodeTextField
-						value={apiConfiguration?.volcengineModelId || ""}
-						style={{ width: "100%" }}
-						onInput={handleInputChange("volcengineModelId")}
-						placeholder={"e.g. llama3.1"}>
-						<span style={{ fontWeight: 500 }}>Model ID</span>
-					</VSCodeTextField>
-					目前仅支持DeepSeek-R1模型.
-				</div>
-			)}
+			{selectedProvider === "volcengine" && volcengine_options}
 
-			{selectedProvider === "aliyun" && (
-				<div>
-					<VSCodeTextField
-						value={apiConfiguration?.aliyunApiKey || ""}
-						style={{ width: "100%" }}
-						type="password"
-						onInput={handleInputChange("aliyunApiKey")}
-						placeholder="Enter API Key...">
-						<span style={{ fontWeight: 500 }}>平台 API Key</span>
-					</VSCodeTextField>
-					<p
-						style={{
-							fontSize: "12px",
-							marginTop: "5px",
-							color: "var(--vscode-descriptionForeground)",
-						}}>
-						这个Key只会存储在本地, 不用担心隐私问题.
-						{!apiConfiguration?.aliyunApiKey && (
-							<VSCodeLink
-								href="https://huiju.ctyun.cn/"
-								style={{ display: "inline", fontSize: "inherit" }}>
-								你可以点击注册相关信息.
-							</VSCodeLink>
-						)}
-					</p>
-				</div>
-			)}
-			{selectedProvider === "ollama" && (
-				<div>
-					<VSCodeTextField
-						value={apiConfiguration?.ollamaBaseUrl || ""}
-						style={{ width: "100%" }}
-						type="url"
-						onInput={handleInputChange("ollamaBaseUrl")}
-						placeholder={"Default: http://localhost:11434"}>
-						<span style={{ fontWeight: 500 }}>Base URL (optional)</span>
-					</VSCodeTextField>
-					<VSCodeTextField
-						value={apiConfiguration?.ollamaModelId || ""}
-						style={{ width: "100%" }}
-						onInput={handleInputChange("ollamaModelId")}
-						placeholder={"e.g. llama3.1"}>
-						<span style={{ fontWeight: 500 }}>Model ID</span>
-					</VSCodeTextField>
-					{ollamaModels.length > 0 && (
-						<VSCodeRadioGroup
-							value={
-								ollamaModels.includes(apiConfiguration?.ollamaModelId || "")
-									? apiConfiguration?.ollamaModelId
-									: ""
-							}
-							onChange={(e) => {
-								const value = (e.target as HTMLInputElement)?.value
-								// need to check value first since radio group returns empty string sometimes
-								if (value) {
-									handleInputChange("ollamaModelId")({
-										target: { value },
-									})
-								}
-							}}>
-							{ollamaModels.map((model) => (
-								<VSCodeRadio
-									key={model}
-									value={model}
-									checked={apiConfiguration?.ollamaModelId === model}>
-									{model}
-								</VSCodeRadio>
-							))}
-						</VSCodeRadioGroup>
-					)}
-					<p
-						style={{
-							fontSize: "12px",
-							marginTop: "5px",
-							color: "var(--vscode-descriptionForeground)",
-						}}>
-						Ollama allows you to run models locally on your computer. For instructions on how to get
-						started, see their
-						<VSCodeLink
-							href="https://github.com/ollama/ollama/blob/main/README.md"
-							style={{ display: "inline", fontSize: "inherit" }}>
-							quickstart guide.
-						</VSCodeLink>
-						<span style={{ color: "var(--vscode-errorForeground)" }}>
-							(<span style={{ fontWeight: 500 }}>Note:</span> Roo Code uses complex prompts and works best
-							with Claude models. Less capable models may not work as expected.)
-						</span>
-					</p>
-				</div>
-			)}
+			{selectedProvider === "aliyun" && aliyun_options}
+			{selectedProvider === "ollama" && ollama_options}
+			{selectedProvider === "tencent" && tencent_options}
 
 			{selectedProvider !== "glama" &&
 				selectedProvider !== "openrouter" &&
@@ -893,6 +926,7 @@ const ApiOptions = ({ modelIdErrorMessage }: ApiOptionsProps) => {
 							{selectedProvider === "baidu" && createDropdown(baiduModels)}
 							{selectedProvider === "aliyun" && createDropdown(aliyunModels)}
 							{selectedProvider === "deepseek" && createDropdown(deepSeekModels)}
+							{selectedProvider === "tencent" && createDropdown(tencentModels)}
 						</div>
 
 						<ModelInfoView
@@ -1089,6 +1123,8 @@ export function normalizeApiConfiguration(apiConfiguration?: ApiConfiguration) {
 			return getProviderData(siliconflowModels, siliconflowDefaultModelId)
 		case "aliyun":
 			return getProviderData(aliyunModels, aliyunDefaultModelId)
+		case "tencent":
+			return getProviderData(tencentModels, tencentDefaultModelId)
 		case "volcengine":
 			return {
 				selectedProvider: provider,

@@ -6,3 +6,7 @@
     - Add provider Aliyun,
     - Fix volcengine deepseek v3, baidu deepseek v3
     - Well, update readme and shop url.
+## 0.0.3 2025-02-20
+    - add france, estonia, germany, chinese, russian language support (part of)
+    - add provider tencent cloud
+    = del some unused code

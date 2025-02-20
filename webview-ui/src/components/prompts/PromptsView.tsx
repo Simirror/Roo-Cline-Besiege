@@ -26,6 +26,8 @@ import {
 
 import { TOOL_GROUPS, GROUP_DISPLAY_NAMES, ToolGroup } from "../../../../src/shared/tool-groups"
 import { vscode } from "../../utils/vscode"
+import { Trans } from "react-i18next"
+import { t } from "i18next"
 
 // Get all available groups that should show in prompts view
 const availableGroups = (Object.keys(TOOL_GROUPS) as ToolGroup[]).filter((group) => !TOOL_GROUPS[group].alwaysAvailable)
@@ -324,14 +326,20 @@ const PromptsView = ({ onDone }: PromptsViewProps) => {
 					alignItems: "center",
 					padding: "10px 17px 10px 20px",
 				}}>
-				<h3 style={{ color: "var(--vscode-foreground)", margin: 0 }}>Prompts</h3>
-				<VSCodeButton onClick={onDone}>Done</VSCodeButton>
+				<h3 style={{ color: "var(--vscode-foreground)", margin: 0 }}>
+					<Trans>{t("prompts.title")}</Trans>
+				</h3>
+				<VSCodeButton onClick={onDone}>
+					<Trans>{t("common.done")}</Trans>
+				</VSCodeButton>
 			</div>
 
 			<div style={{ flex: 1, overflow: "auto", padding: "0 20px" }}>
 				<div style={{ paddingBottom: "20px", borderBottom: "1px solid var(--vscode-input-border)" }}>
 					<div style={{ marginBottom: "20px" }}>
-						<div style={{ fontWeight: "bold", marginBottom: "4px" }}>Preferred Language</div>
+						<div style={{ fontWeight: "bold", marginBottom: "4px" }}>
+							<Trans>{t("prompts.preferred_language")}</Trans>
+						</div>
 						<select
 							value={preferredLanguage}
 							onChange={(e) => {
@@ -375,15 +383,16 @@ const PromptsView = ({ onDone }: PromptsViewProps) => {
 								marginTop: "5px",
 								color: "var(--vscode-descriptionForeground)",
 							}}>
-							Select the language that Cline should use for communication.
+							<Trans>{t("prompts.preferred_language_description")}</Trans>
 						</p>
 					</div>
 
-					<div style={{ fontWeight: "bold", marginBottom: "4px" }}>Custom Instructions for All Modes</div>
+					<div style={{ fontWeight: "bold", marginBottom: "4px" }}>
+						<Trans>{t("prompts.custom_title")}</Trans>
+					</div>
 					<div
 						style={{ fontSize: "13px", color: "var(--vscode-descriptionForeground)", marginBottom: "8px" }}>
-						These instructions apply to all modes. They provide a base set of behaviors that can be enhanced
-						by mode-specific instructions below.
+						<Trans>{t("prompts.custom_description")}</Trans>
 					</div>
 					<VSCodeTextArea
 						value={customInstructions ?? ""}
@@ -409,7 +418,7 @@ const PromptsView = ({ onDone }: PromptsViewProps) => {
 							marginTop: "5px",
 							marginBottom: "40px",
 						}}>
-						Instructions can also be loaded from{" "}
+						<Trans>{t("prompts.instructions_pre")}</Trans>{" "}
 						<span
 							style={{
 								color: "var(--vscode-textLink-foreground)",
@@ -428,7 +437,7 @@ const PromptsView = ({ onDone }: PromptsViewProps) => {
 							}>
 							.clinerules
 						</span>{" "}
-						in your workspace.
+						<Trans>{t("prompts.instructions_suf")}</Trans>
 					</div>
 				</div>
 
@@ -440,7 +449,10 @@ const PromptsView = ({ onDone }: PromptsViewProps) => {
 							alignItems: "center",
 							marginBottom: "12px",
 						}}>
-						<h3 style={{ color: "var(--vscode-foreground)", margin: 0 }}>Mode-Specific Prompts</h3>
+						<h3 style={{ color: "var(--vscode-foreground)", margin: 0 }}>
+							{" "}
+							<Trans>{t("model_specific.title")}</Trans>
+						</h3>
 						<div style={{ display: "flex", gap: "8px" }}>
 							<VSCodeButton appearance="icon" onClick={openCreateModeDialog} title="Create new mode">
 								<span className="codicon codicon-add"></span>
@@ -464,7 +476,7 @@ const PromptsView = ({ onDone }: PromptsViewProps) => {
 							color: "var(--vscode-descriptionForeground)",
 							marginBottom: "12px",
 						}}>
-						Hit the + to create a new custom mode, or just ask Roo in chat to create one for you!
+						<Trans>{t("model_specific.description")}</Trans>
 					</div>
 
 					<div
@@ -549,7 +561,9 @@ const PromptsView = ({ onDone }: PromptsViewProps) => {
 								alignItems: "center",
 								marginBottom: "4px",
 							}}>
-							<div style={{ fontWeight: "bold" }}>Role Definition</div>
+							<div style={{ fontWeight: "bold" }}>
+								<Trans>{t("model_specific.role_definition")}</Trans>
+							</div>
 							{!findModeBySlug(mode, customModes) && (
 								<VSCodeButton
 									appearance="icon"
@@ -571,8 +585,7 @@ const PromptsView = ({ onDone }: PromptsViewProps) => {
 								color: "var(--vscode-descriptionForeground)",
 								marginBottom: "8px",
 							}}>
-							Define Roo's expertise and personality for this mode. This description shapes how Roo
-							presents itself and approaches tasks.
+							<Trans>{t("model_specific.role_definition_description")}</Trans>
 						</div>
 						<VSCodeTextArea
 							value={(() => {
@@ -607,7 +620,9 @@ const PromptsView = ({ onDone }: PromptsViewProps) => {
 					{/* Mode settings */}
 					<>
 						<div style={{ marginBottom: "12px" }}>
-							<div style={{ fontWeight: "bold", marginBottom: "4px" }}>API Configuration</div>
+							<div style={{ fontWeight: "bold", marginBottom: "4px" }}>
+								<Trans>{t("model_specific.api")}</Trans>
+							</div>
 							<div style={{ marginBottom: "8px" }}>
 								<VSCodeDropdown
 									value={currentApiConfigName || ""}
@@ -631,7 +646,7 @@ const PromptsView = ({ onDone }: PromptsViewProps) => {
 										marginTop: "5px",
 										color: "var(--vscode-descriptionForeground)",
 									}}>
-									Select which API configuration to use for this mode
+									<Trans>{t("model_specific.api_description")}</Trans>
 								</div>
 							</div>
 						</div>
@@ -645,7 +660,9 @@ const PromptsView = ({ onDone }: PromptsViewProps) => {
 									alignItems: "center",
 									marginBottom: "4px",
 								}}>
-								<div style={{ fontWeight: "bold" }}>Available Tools</div>
+								<div style={{ fontWeight: "bold" }}>
+									<Trans>{t("model_specific.tools")}</Trans>
+								</div>
 								{findModeBySlug(mode, customModes) && (
 									<VSCodeButton
 										appearance="icon"
@@ -663,7 +680,7 @@ const PromptsView = ({ onDone }: PromptsViewProps) => {
 										color: "var(--vscode-descriptionForeground)",
 										marginBottom: "8px",
 									}}>
-									Tools for built-in modes cannot be modified
+									<Trans>{t("model_specific.tools_description")}</Trans>
 								</div>
 							)}
 							{isToolsEditMode && findModeBySlug(mode, customModes) ? (

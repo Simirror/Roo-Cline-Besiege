@@ -55,7 +55,7 @@ type SecretKey =
 	| "baiduApiKey"
 	| "deepSeekApiKey"
 	| "aliyunApiKey"
-	| "unboundApiKey"
+	| "tencentApiKey"
 type GlobalStateKey =
 	| "apiProvider"
 	| "apiModelId"
@@ -1494,7 +1494,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			openRouterUseMiddleOutTransform,
 			vsCodeLmModelSelector,
 			aliyunApiKey,
-			unboundApiKey,
+			tencentApiKey,
 			aliyunModelId,
 		} = apiConfiguration
 		await this.updateGlobalState("apiProvider", apiProvider)
@@ -1534,7 +1534,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 		await this.updateGlobalState("openRouterUseMiddleOutTransform", openRouterUseMiddleOutTransform)
 		await this.updateGlobalState("vsCodeLmModelSelector", vsCodeLmModelSelector)
 		await this.storeSecret("aliyunApiKey", aliyunApiKey)
-		await this.storeSecret("unboundApiKey", unboundApiKey)
+		await this.storeSecret("tencentApiKey", tencentApiKey)
 		await this.updateGlobalState("aliyunModelId", aliyunModelId)
 		if (this.cline) {
 			this.cline.api = buildApiHandler(apiConfiguration)
@@ -2090,7 +2090,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			autoApprovalEnabled,
 			customModes,
 			experiments,
-			unboundApiKey,
+			tencentApiKey,
 			aliyunModelId,
 		] = await Promise.all([
 			this.getGlobalState("apiProvider") as Promise<ApiProvider | undefined>,
@@ -2164,7 +2164,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			this.getGlobalState("autoApprovalEnabled") as Promise<boolean | undefined>,
 			this.customModesManager.getCustomModes(),
 			this.getGlobalState("experiments") as Promise<Record<ExperimentId, boolean> | undefined>,
-			this.getSecret("unboundApiKey") as Promise<string | undefined>,
+			this.getSecret("tencentApiKey") as Promise<string | undefined>,
 			this.getGlobalState("aliyunModelId") as Promise<string | undefined>,
 		])
 
@@ -2222,7 +2222,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 				openRouterBaseUrl,
 				openRouterUseMiddleOutTransform,
 				vsCodeLmModelSelector,
-				unboundApiKey,
+				tencentApiKey,
 				aliyunModelId,
 			},
 			lastShownAnnouncementId,
@@ -2375,7 +2375,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			"baiduApiKey",
 			"deepSeekApiKey",
 			"aliyunApiKey",
-			"unboundApiKey",
+			"tencentApiKey",
 		]
 		for (const key of secretKeys) {
 			await this.storeSecret(key, undefined)

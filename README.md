@@ -52,10 +52,19 @@ And Deepseek provider.
     - DeepSeek-V3 [√]
 - 硅基流动(SiliconFlow)
     - DeepSeek-R1 [√]
-    - DeepSeek-V3 [×] (下个版本修复,本周四维纳斯军团本开了, 下周会修复)
+    - DeepSeek-V3 [×] (修复了一部分, 偶尔还是抽风)
 - 阿里云(AliYun)
     - DeepSeek-R1 [√]
     - DeepSeek-V3 [√]
+- 腾讯云(TencentCloud)
+    - DeepSeek-R1 [√]
+    - DeepSeek-V3 [√]
+- 移动云(ECloud) (个人账户按钮点不了...可能是我个人问题)
+    - DeepSeek-R1 [X]
+    - DeepSeek-V3 [X]
+- UCLOUD (提交申请了, 还没回信)
+    - DeepSeek-R1 [X]
+    - DeepSeek-V3 [X]
 
 # Changelog
 
@@ -65,16 +74,46 @@ And Deepseek provider.
     - Add provider Aliyun,
     - Fix volcengine deepseek v3, baidu deepseek v3
     - Well, update readme and shop url.
+- 0.0.3 2025-02-20
+    - add france, estonia, germany, chinese, russian language support (part of)
+    - add provider tencent cloud
+      = del some unused code
 
 # Next Update
 
 - [ ] Fix siliconflow deepseek v3
-- [ ] Add provider Tencent Cloud(If it works)
+- [√] Add provider Tencent Cloud(If it works)
 - [ ] Add more models
-- [ ] i18n
-- [ ] Remove some useless code
+- [√] i18n
+- [√] Remove some useless code
 
 Next Update will be next thursday or friday.
+
+## Local Setup & Development(Roo Cline)
+
+1. **Clone** the repo:
+    ```bash
+    git clone https://github.com/RooVetGit/Roo-Code.git
+    ```
+2. **Install dependencies**:
+    ```bash
+    npm run install:all
+    ```
+3. **Build** the extension:
+    ```bash
+    npm run build
+    ```
+    - A `.vsix` file will appear in the `bin/` directory.
+4. **Install** the `.vsix` manually if desired:
+    ```bash
+    code --install-extension bin/roo-code-4.0.0.vsix
+    ```
+5. **Start the webview (Vite/React app with HMR)**:
+    ```bash
+    npm run dev
+    ```
+6. **Debug**:
+    - Press `F5` (or **Run** → **Start Debugging**) in VSCode to open a new session with Roo Code loaded.
 
 # Thanks 感谢
 

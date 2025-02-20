@@ -9,6 +9,9 @@ import { EXPERIMENT_IDS, experimentConfigsMap } from "../../../../src/shared/exp
 import ApiConfigManager from "./ApiConfigManager"
 import { Dropdown } from "vscrui"
 import type { DropdownOption } from "vscrui"
+import { Trans } from "react-i18next"
+import { t } from "i18next"
+import LanguageSwitcher from "./LanguageSwitcher"
 
 type SettingsViewProps = {
 	onDone: () => void
@@ -177,13 +180,28 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 					marginBottom: "17px",
 					paddingRight: 17,
 				}}>
-				<h3 style={{ color: "var(--vscode-foreground)", margin: 0 }}>Settings</h3>
-				<VSCodeButton onClick={handleSubmit}>Done</VSCodeButton>
+				<h3 style={{ color: "var(--vscode-foreground)", margin: 0 }}>
+					<Trans>{t("settings.title")}</Trans>
+				</h3>
+				<VSCodeButton onClick={handleSubmit}>
+					<Trans>{t("common.done")}</Trans>
+				</VSCodeButton>
 			</div>
 			<div
-				style={{ flexGrow: 1, overflowY: "scroll", paddingRight: 8, display: "flex", flexDirection: "column" }}>
+				style={{
+					flexGrow: 1,
+					overflowY: "scroll",
+					paddingRight: 8,
+					display: "flex",
+					flexDirection: "column",
+				}}>
+				<div style={{ display: "flex", gap: "10px", alignItems: "center", marginBottom: 8 }}>
+					<LanguageSwitcher />
+				</div>
 				<div style={{ marginBottom: 40 }}>
-					<h3 style={{ color: "var(--vscode-foreground)", margin: "0 0 15px 0" }}>Provider Settings</h3>
+					<h3 style={{ color: "var(--vscode-foreground)", margin: "0 0 15px 0" }}>
+						<Trans>{t("settings.providerSettings")}</Trans>
+					</h3>
 					<div style={{ marginBottom: 15 }}>
 						<ApiConfigManager
 							currentApiConfigName={currentApiConfigName}
@@ -220,18 +238,20 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 				</div>
 
 				<div style={{ marginBottom: 40 }}>
-					<h3 style={{ color: "var(--vscode-foreground)", margin: "0 0 15px 0" }}>Auto-Approve Settings</h3>
+					<h3 style={{ color: "var(--vscode-foreground)", margin: "0 0 15px 0" }}>
+						<Trans>{t("settings.autoApproveSettings")}</Trans>
+					</h3>
 					<p style={{ fontSize: "12px", marginBottom: 15, color: "var(--vscode-descriptionForeground)" }}>
-						The following settings allow Roo to automatically perform operations without requiring approval.
-						Enable these settings only if you fully trust the AI and understand the associated security
-						risks.
+						<Trans>{t("settings.autoApproveDesc")}</Trans>
 					</p>
 
 					<div style={{ marginBottom: 15 }}>
 						<VSCodeCheckbox
 							checked={alwaysAllowReadOnly}
 							onChange={(e: any) => setAlwaysAllowReadOnly(e.target.checked)}>
-							<span style={{ fontWeight: "500" }}>Always approve read-only operations</span>
+							<span style={{ fontWeight: "500" }}>
+								<Trans>{t("settings.alwaysApproveReadOnly")}</Trans>
+							</span>
 						</VSCodeCheckbox>
 						<p
 							style={{
@@ -239,8 +259,7 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 								marginTop: "5px",
 								color: "var(--vscode-descriptionForeground)",
 							}}>
-							When enabled, Roo will automatically view directory contents and read files without
-							requiring you to click the Approve button.
+							<Trans>{t("settings.alwaysApproveReadOnlyDesc")}</Trans>
 						</p>
 					</div>
 
@@ -248,10 +267,12 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 						<VSCodeCheckbox
 							checked={alwaysAllowWrite}
 							onChange={(e: any) => setAlwaysAllowWrite(e.target.checked)}>
-							<span style={{ fontWeight: "500" }}>Always approve write operations</span>
+							<span style={{ fontWeight: "500" }}>
+								<Trans>{t("settings.alwaysApproveWrite")}</Trans>
+							</span>
 						</VSCodeCheckbox>
 						<p style={{ fontSize: "12px", marginTop: "5px", color: "var(--vscode-descriptionForeground)" }}>
-							Automatically create and edit files without requiring approval
+							<Trans>{t("settings.alwaysApproveWriteDesc")}</Trans>
 						</p>
 						{alwaysAllowWrite && (
 							<div
@@ -282,7 +303,7 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 										marginTop: "5px",
 										color: "var(--vscode-descriptionForeground)",
 									}}>
-									Delay after writes to allow diagnostics to detect potential problems
+									<Trans>{t("settings.writeDelayDesc")}</Trans>
 								</p>
 							</div>
 						)}
@@ -292,12 +313,14 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 						<VSCodeCheckbox
 							checked={alwaysAllowBrowser}
 							onChange={(e: any) => setAlwaysAllowBrowser(e.target.checked)}>
-							<span style={{ fontWeight: "500" }}>Always approve browser actions</span>
+							<span style={{ fontWeight: "500" }}>
+								<Trans>{t("settings.alwaysApproveBrowser")}</Trans>
+							</span>
 						</VSCodeCheckbox>
 						<p style={{ fontSize: "12px", marginTop: "5px", color: "var(--vscode-descriptionForeground)" }}>
-							Automatically perform browser actions without requiring approval
+							<Trans>{t("settings.alwaysApproveBrowserDesc")}</Trans>
 							<br />
-							Note: Only applies when the model supports computer use
+							<Trans>{t("settings.alwaysApproveBrowserNote")}</Trans>
 						</p>
 					</div>
 
@@ -713,12 +736,8 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 					<p style={{ wordWrap: "break-word", margin: 0, padding: 0 }}>
 						If you have any questions or feedback, feel free to open an issue at{" "}
 						<VSCodeLink href="https://github.com/RooVetGit/Roo-Code" style={{ display: "inline" }}>
-							github.com/RooVetGit/Roo-Code
+							github.com/Simirror/Roo-Cline-Besiege
 						</VSCodeLink>{" "}
-						or join{" "}
-						<VSCodeLink href="https://www.reddit.com/r/RooCode/" style={{ display: "inline" }}>
-							reddit.com/r/RooCode
-						</VSCodeLink>
 					</p>
 					<p style={{ fontStyle: "italic", margin: "10px 0 0 0", padding: 0, marginBottom: 100 }}>
 						v{version}

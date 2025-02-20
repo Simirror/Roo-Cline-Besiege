@@ -9,6 +9,16 @@ import { ExtensionStateContextProvider, useExtensionState } from "./context/Exte
 import { vscode } from "./utils/vscode"
 import McpView from "./components/mcp/McpView"
 import PromptsView from "./components/prompts/PromptsView"
+import { I18nextProvider } from "react-i18next"
+import i18n from "./i18n"
+
+const App = () => (
+	<I18nextProvider i18n={i18n}>
+		<ExtensionStateContextProvider>
+			<AppContent />
+		</ExtensionStateContextProvider>
+	</I18nextProvider>
+)
 
 const AppContent = () => {
 	const { didHydrateState, showWelcome, shouldShowAnnouncement } = useExtensionState()
@@ -98,14 +108,6 @@ const AppContent = () => {
 				</>
 			)}
 		</>
-	)
-}
-
-const App = () => {
-	return (
-		<ExtensionStateContextProvider>
-			<AppContent />
-		</ExtensionStateContextProvider>
 	)
 }
 

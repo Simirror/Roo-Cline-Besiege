@@ -2,6 +2,7 @@ import { VSCodeCheckbox } from "@vscode/webview-ui-toolkit/react"
 import { useCallback, useState } from "react"
 import { useExtensionState } from "../../context/ExtensionStateContext"
 import { vscode } from "../../utils/vscode"
+import { t } from "i18next"
 
 interface AutoApproveAction {
 	id: string
@@ -39,54 +40,52 @@ const AutoApproveMenu = ({ style }: AutoApproveMenuProps) => {
 	const actions: AutoApproveAction[] = [
 		{
 			id: "readFiles",
-			label: "Read files and directories",
+			label: t("input.Read"),
 			shortName: "Read",
 			enabled: alwaysAllowReadOnly ?? false,
-			description: "Allows access to read any file on your computer.",
+			description: t("input.ReadDesc"),
 		},
 		{
 			id: "editFiles",
-			label: "Edit files",
+			label: t("input.Edit"),
 			shortName: "Edit",
 			enabled: alwaysAllowWrite ?? false,
-			description: "Allows modification of any files on your computer.",
+			description: t("input.EditDesc"),
 		},
 		{
 			id: "executeCommands",
-			label: "Execute approved commands",
+			label: t("input.Commands"),
 			shortName: "Commands",
 			enabled: alwaysAllowExecute ?? false,
-			description:
-				"Allows execution of approved terminal commands. You can configure this in the settings panel.",
+			description: t("input.CommandsDesc"),
 		},
 		{
 			id: "useBrowser",
-			label: "Use the browser",
+			label: t("input.Browser"),
 			shortName: "Browser",
 			enabled: alwaysAllowBrowser ?? false,
-			description: "Allows ability to launch and interact with any website in a headless browser.",
+			description: t("input.BrowserDesc"),
 		},
 		{
 			id: "useMcp",
-			label: "Use MCP servers",
+			label: t("input.MCP"),
 			shortName: "MCP",
 			enabled: alwaysAllowMcp ?? false,
-			description: "Allows use of configured MCP servers which may modify filesystem or interact with APIs.",
+			description: t("input.MCPDesc"),
 		},
 		{
 			id: "switchModes",
-			label: "Switch modes & create tasks",
+			label: t("input.Modes"),
 			shortName: "Modes",
 			enabled: alwaysAllowModeSwitch ?? false,
-			description:
-				"Allows automatic switching between different AI modes and creating new tasks without requiring approval.",
+			description: t("input.ModesDesc"),
 		},
 		{
 			id: "retryRequests",
-			label: "Retry failed requests",
+			label: t("input.Retries"),
 			shortName: "Retries",
 			enabled: alwaysApproveResubmit ?? false,
-			description: "Automatically retry failed API requests when the provider returns an error response.",
+			description: t("input.RetriesDesc"),
 		},
 	]
 
@@ -196,7 +195,7 @@ const AutoApproveMenu = ({ style }: AutoApproveMenuProps) => {
 							color: "var(--vscode-foreground)",
 							flexShrink: 0,
 						}}>
-						Auto-approve:
+						{t("input.autoApprove")}
 					</span>
 					<span
 						style={{
@@ -226,8 +225,7 @@ const AutoApproveMenu = ({ style }: AutoApproveMenuProps) => {
 							color: "var(--vscode-descriptionForeground)",
 							fontSize: "12px",
 						}}>
-						Auto-approve allows Roo Code to perform actions without asking for permission. Only enable for
-						actions you fully trust.
+						{t("input.autoApproveDesc")}
 					</div>
 					{actions.map((action) => (
 						<div key={action.id} style={{ margin: "6px 0" }}>

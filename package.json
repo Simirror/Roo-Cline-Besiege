@@ -3,7 +3,7 @@
 	"displayName": "Roo Code Besiege ",
 	"description": "roo-cline-besiege is a fork from Roo-cline, it fix some question and del some where cant connect serve provider.",
 	"publisher": "felikspeegel",
-	"version": "0.0.1",
+	"version": "0.0.4",
 	"icon": "assets/icons/coffee.png",
 	"galleryBanner": {
 		"color": "#617A91",

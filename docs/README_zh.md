@@ -12,7 +12,7 @@
 
 <div align="center">
 
-[English](./docs/README_en.md) | [Français](./docs/README_fr.md) | [Deutsch](./docs/README_de.md) | [Eesti](./docs/README_et.md) | [Русский](./docs/README_ru.md) | 简体中文
+[English](./README_en.md) | [Français](./README_fr.md) | [Deutsch](./README_de.md) | [Eesti](./README_et.md) | [Русский](./README_ru.md) | 简体中文
 
 </div>
 
@@ -52,17 +52,17 @@
     - DeepSeek-V3 [√]
 - 硅基流动(SiliconFlow)
     - DeepSeek-R1 [√]
-    - DeepSeek-V3 [×]
+    - DeepSeek-V3 [×] (修复了一部分, 偶尔还是抽风)
 - 阿里云(AliYun)
     - DeepSeek-R1 [√]
     - DeepSeek-V3 [√]
 - 腾讯云(TencentCloud)
     - DeepSeek-R1 [√]
     - DeepSeek-V3 [√]
-- 移动云(ECloud) (个人账户按钮仍然点不了...)
+- 移动云(ECloud) (个人账户按钮点不了...可能是我个人问题)
     - DeepSeek-R1 [X]
     - DeepSeek-V3 [X]
-- UCLOUD (没有空闲资源了, 需要等待)
+- UCLOUD (提交申请了, 还没回信)
     - DeepSeek-R1 [X]
     - DeepSeek-V3 [X]
 
@@ -78,10 +78,6 @@
     - 添加法语、爱沙尼亚语、德语、中文、俄语支持（部分）
     - 添加腾讯云提供商
     - 删除一些无用代码
-- 0.0.4 2025-02-27
-    - 又翻译了一些,并不是全部
-    - 删了一点点冗余的代码
-    - 更改了计费的单位
 
 ## 下次更新计划
 

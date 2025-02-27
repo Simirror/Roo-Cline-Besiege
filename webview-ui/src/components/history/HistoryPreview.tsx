@@ -3,6 +3,8 @@ import { useExtensionState } from "../../context/ExtensionStateContext"
 import { vscode } from "../../utils/vscode"
 import { memo } from "react"
 import { formatLargeNumber } from "../../utils/format"
+import { Trans } from "react-i18next"
+import { t } from "i18next"
 
 type HistoryPreviewProps = {
 	showHistoryView: () => void
@@ -66,7 +68,7 @@ const HistoryPreview = ({ showHistoryView }: HistoryPreviewProps) => {
 						fontSize: "0.85em",
 						textTransform: "uppercase",
 					}}>
-					Recent Tasks
+					<Trans>{t("welcome.recent")}</Trans>
 				</span>
 			</div>
 
@@ -142,7 +144,7 @@ const HistoryPreview = ({ showHistoryView }: HistoryPreviewProps) => {
 								fontSize: "var(--vscode-font-size)",
 								color: "var(--vscode-descriptionForeground)",
 							}}>
-							View all history
+							<Trans>{t("welcome.viewAll")}</Trans>
 						</div>
 					</VSCodeButton>
 				</div>

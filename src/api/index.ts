@@ -11,6 +11,7 @@ import { VolcengineHandler } from "./providers/volcengine"
 import { BaiduHandler } from "./providers/baidu"
 import { CtyunHandler } from "./providers/ctyun"
 import { AliyunHandler } from "./providers/aliyun"
+import { TencentHandler } from "./providers/tencent"
 
 export interface SingleCompletionHandler {
 	completePrompt(prompt: string): Promise<string>
@@ -32,6 +33,8 @@ export function buildApiHandler(configuration: ApiConfiguration): ApiHandler {
 			return new DeepSeekHandler(options)
 		case "aliyun":
 			return new AliyunHandler(options)
+		case "tencent":
+			return new TencentHandler(options)
 		case "ctyun":
 			return new CtyunHandler(options)
 		case "baidu":

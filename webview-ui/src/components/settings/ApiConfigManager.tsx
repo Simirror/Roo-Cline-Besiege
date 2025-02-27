@@ -3,6 +3,8 @@ import { memo, useEffect, useRef, useState } from "react"
 import { ApiConfigMeta } from "../../../../src/shared/ExtensionMessage"
 import { Dropdown } from "vscrui"
 import type { DropdownOption } from "vscrui"
+import { Trans } from "react-i18next"
+import { t } from "i18next"
 
 interface ApiConfigManagerProps {
 	currentApiConfigName?: string
@@ -90,7 +92,9 @@ const ApiConfigManager = ({
 					gap: "2px",
 				}}>
 				<label htmlFor="config-profile">
-					<span style={{ fontWeight: "500" }}>Configuration Profile</span>
+					<span style={{ fontWeight: "500" }}>
+						<Trans>{t("settings.configProfile")}</Trans>
+					</span>
 				</label>
 
 				{editState ? (
@@ -207,7 +211,7 @@ const ApiConfigManager = ({
 								margin: "5px 0 12px",
 								color: "var(--vscode-descriptionForeground)",
 							}}>
-							Save different API configurations to quickly switch between providers and settings
+							<Trans>{t("settings.configProfileDesc")}</Trans>
 						</p>
 					</>
 				)}

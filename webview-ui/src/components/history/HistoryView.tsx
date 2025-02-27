@@ -6,6 +6,7 @@ import React, { memo, useMemo, useState, useEffect } from "react"
 import { Fzf } from "fzf"
 import { formatLargeNumber } from "../../utils/format"
 import { highlightFzfMatch } from "../../utils/highlight"
+import { t } from "i18next"
 
 type HistoryViewProps = {
 	onDone: () => void
@@ -163,14 +164,14 @@ const HistoryView = ({ onDone }: HistoryViewProps) => {
 						alignItems: "center",
 						padding: "10px 17px 10px 20px",
 					}}>
-					<h3 style={{ color: "var(--vscode-foreground)", margin: 0 }}>History</h3>
+					<h3 style={{ color: "var(--vscode-foreground)", margin: 0 }}>{t("history.title")}</h3>
 					<VSCodeButton onClick={onDone}>Done</VSCodeButton>
 				</div>
 				<div style={{ padding: "5px 17px 6px 17px" }}>
 					<div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
 						<VSCodeTextField
 							style={{ width: "100%" }}
-							placeholder="Fuzzy search history..."
+							placeholder={t("history.search")}
 							value={searchQuery}
 							onInput={(e) => {
 								const newValue = (e.target as HTMLInputElement)?.value
@@ -204,15 +205,15 @@ const HistoryView = ({ onDone }: HistoryViewProps) => {
 							value={sortOption}
 							role="radiogroup"
 							onChange={(e) => setSortOption((e.target as HTMLInputElement).value as SortOption)}>
-							<VSCodeRadio value="newest">Newest</VSCodeRadio>
-							<VSCodeRadio value="oldest">Oldest</VSCodeRadio>
-							<VSCodeRadio value="mostExpensive">Most Expensive</VSCodeRadio>
-							<VSCodeRadio value="mostTokens">Most Tokens</VSCodeRadio>
+							<VSCodeRadio value="newest">{t("history.newest")}</VSCodeRadio>
+							<VSCodeRadio value="oldest">{t("history.oldest")}</VSCodeRadio>
+							<VSCodeRadio value="mostExpensive">{t("history.mostExpensive")}</VSCodeRadio>
+							<VSCodeRadio value="mostTokens">{t("history.mostTokens")}</VSCodeRadio>
 							<VSCodeRadio
 								value="mostRelevant"
 								disabled={!searchQuery}
 								style={{ opacity: searchQuery ? 1 : 0.5 }}>
-								Most Relevant
+								{t("history.mostRelevant")}
 							</VSCodeRadio>
 						</VSCodeRadioGroup>
 					</div>

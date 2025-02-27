@@ -1,6 +1,15 @@
 import * as vscode from "vscode"
 
-export type ApiProvider = "openai" | "ollama" | "deepseek" | "ctyun" | "volcengine" | "baidu" | "siliconflow" | "aliyun"
+export type ApiProvider =
+	| "openai"
+	| "ollama"
+	| "deepseek"
+	| "ctyun"
+	| "volcengine"
+	| "baidu"
+	| "siliconflow"
+	| "aliyun"
+	| "tencent"
 
 export interface ApiHandlerOptions {
 	apiModelId?: string
@@ -8,7 +17,6 @@ export interface ApiHandlerOptions {
 	anthropicBaseUrl?: string
 	vsCodeLmModelSelector?: vscode.LanguageModelChatSelector
 	glamaModelInfo?: ModelInfo
-
 	volcengineApiKey?: string
 	volcengineModelId?: string
 	openRouterModelInfo?: ModelInfo
@@ -42,15 +50,15 @@ export interface ApiHandlerOptions {
 	setAzureApiVersion?: boolean
 	deepSeekBaseUrl?: string
 	deepSeekApiKey?: string
-
 	baiduModelId?: string
 	siliconflowModelId?: string
 	//siliconflowModelInfo?: ModelInfo
 	ctyunApiKey?: string
 	ctyunModelId?: string
 	includeMaxTokens?: boolean
-	unboundApiKey?: string
+	tencentApiKey?: string
 	aliyunModelId?: string
+	tencentModelId?: string
 }
 
 export type ApiConfiguration = ApiHandlerOptions & {
@@ -605,8 +613,8 @@ export const deepSeekModels = {
 		contextWindow: 64_000,
 		supportsImages: false,
 		supportsPromptCache: false,
-		inputPrice: 0.014, // $0.014 per million tokens
-		outputPrice: 0.28, // $0.28 per million tokens
+		inputPrice: 2, // $4 per million tokens
+		outputPrice: 8, // $8 per million tokens
 		description: `DeepSeek-V3 achieves a significant breakthrough in inference speed over previous models. It tops the leaderboard among open-source models and rivals the most advanced closed-source models globally.`,
 	},
 	"deepseek-reasoner": {
@@ -614,8 +622,8 @@ export const deepSeekModels = {
 		contextWindow: 64_000,
 		supportsImages: false,
 		supportsPromptCache: false,
-		inputPrice: 0.55, // $0.55 per million tokens
-		outputPrice: 2.19, // $2.19 per million tokens
+		inputPrice: 4, // $4 per million tokens
+		outputPrice: 16, // $16 per million tokens
 		description: `DeepSeek-R1 achieves performance comparable to OpenAI-o1 across math, code, and reasoning tasks.`,
 	},
 } as const satisfies Record<string, ModelInfo>
@@ -630,8 +638,8 @@ export const siliconflowModels = {
 		contextWindow: 64_000,
 		supportsImages: false,
 		supportsPromptCache: false,
-		inputPrice: 0.014, // $0.014 per million tokens
-		outputPrice: 0.28, // $0.28 per million tokens
+		inputPrice: 4, // $4 per million tokens
+		outputPrice: 8, // $8 per million tokens
 		description: `DeepSeek-V3 achieves a significant breakthrough in inference speed over previous models. It tops the leaderboard among open-source models and rivals the most advanced closed-source models globally.`,
 	},
 	"deepseek-ai/DeepSeek-R1": {
@@ -639,8 +647,8 @@ export const siliconflowModels = {
 		contextWindow: 64_000,
 		supportsImages: false,
 		supportsPromptCache: false,
-		inputPrice: 0.55, // $0.55 per million tokens
-		outputPrice: 2.19, // $2.19 per million tokens
+		inputPrice: 4, // $4 per million tokens
+		outputPrice: 16, // $16 per million tokens
 		description: `DeepSeek-R1 achieves performance comparable to OpenAI-o1 across math, code, and reasoning tasks.`,
 	},
 } as const satisfies Record<string, ModelInfo>
@@ -655,8 +663,8 @@ export const baiduModels = {
 		contextWindow: 64_000,
 		supportsImages: false,
 		supportsPromptCache: false,
-		inputPrice: 0.014, // $0.014 per million tokens
-		outputPrice: 0.28, // $0.28 per million tokens
+		inputPrice: 4, // $4 per million tokens
+		outputPrice: 8, // $8 per million tokens
 		description: `DeepSeek-V3 achieves a significant breakthrough in inference speed over previous models. It tops the leaderboard among open-source models and rivals the most advanced closed-source models globally.`,
 	},
 	"deepseek-r1": {
@@ -664,8 +672,8 @@ export const baiduModels = {
 		contextWindow: 64_000,
 		supportsImages: false,
 		supportsPromptCache: false,
-		inputPrice: 0.55, // $0.55 per million tokens
-		outputPrice: 2.19, // $2.19 per million tokens
+		inputPrice: 4, // $4 per million tokens
+		outputPrice: 16, // $16 per million tokens
 		description: `DeepSeek-R1 achieves performance comparable to OpenAI-o1 across math, code, and reasoning tasks.`,
 	},
 } as const satisfies Record<string, ModelInfo>
@@ -680,8 +688,8 @@ export const aliyunModels = {
 		contextWindow: 64_000,
 		supportsImages: false,
 		supportsPromptCache: false,
-		inputPrice: 0.014, // $0.014 per million tokens
-		outputPrice: 0.28, // $0.28 per million tokens
+		inputPrice: 4, // $4 per million tokens
+		outputPrice: 8, // $8 per million tokens
 		description: `DeepSeek-V3 achieves a significant breakthrough in inference speed over previous models. It tops the leaderboard among open-source models and rivals the most advanced closed-source models globally.`,
 	},
 	"deepseek-r1": {
@@ -689,8 +697,33 @@ export const aliyunModels = {
 		contextWindow: 64_000,
 		supportsImages: false,
 		supportsPromptCache: false,
-		inputPrice: 0.55, // $0.55 per million tokens
-		outputPrice: 2.19, // $2.19 per million tokens
+		inputPrice: 4, // $4 per million tokens
+		outputPrice: 16, // $16 per million tokens
+		description: `DeepSeek-R1 achieves performance comparable to OpenAI-o1 across math, code, and reasoning tasks.`,
+	},
+} as const satisfies Record<string, ModelInfo>
+
+// Tencent
+// https://docs.siliconflow.cn/api-reference
+export type TencentModelId = keyof typeof tencentModels
+export const tencentDefaultModelId: TencentModelId = "deepseek-v3"
+export const tencentModels = {
+	"deepseek-v3": {
+		maxTokens: 4096,
+		contextWindow: 64_000,
+		supportsImages: false,
+		supportsPromptCache: false,
+		inputPrice: 4, // $4 per million tokens
+		outputPrice: 8, // $8 per million tokens
+		description: `DeepSeek-V3 achieves a significant breakthrough in inference speed over previous models. It tops the leaderboard among open-source models and rivals the most advanced closed-source models globally.`,
+	},
+	"deepseek-r1": {
+		maxTokens: 4096,
+		contextWindow: 64_000,
+		supportsImages: false,
+		supportsPromptCache: false,
+		inputPrice: 4, // $4 per million tokens
+		outputPrice: 16, // $16 per million tokens
 		description: `DeepSeek-R1 achieves performance comparable to OpenAI-o1 across math, code, and reasoning tasks.`,
 	},
 } as const satisfies Record<string, ModelInfo>

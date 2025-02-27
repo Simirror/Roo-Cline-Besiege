@@ -96,5 +96,48 @@
 	},
 	"provider": {
 		"keyPrivacy": "This key is stored locally and only used to make API requests from this extension."
+	},
+	"mcp": {
+		"servers": "MCP Servers",
+		"enableServerCreation": "Enable MCP Server Creation",
+		"enableServerCreationDesc": "When enabled, Roo can help you create new MCP servers via commands like \"add a new tool to...\". If you don't need to create MCP servers you can disable this to reduce Roo's token usage.",
+		"tools": "Tools",
+		"resources": "Resources",
+		"networkTimeout": "Network Timeout",
+		"restartServer": "Restart Server",
+		"restarting": "Restarting...",
+		"retryConnection": "Retry Connection",
+		"retrying": "Retrying...",
+		"noToolsFound": "No tools found",
+		"noResourcesFound": "No resources found",
+		"maxTimeoutDesc": "Maximum time to wait for server responses",
+		"editSettings": "Edit MCP Settings"
+	},
+	"history": {
+		"title": "History",
+		"search": "Fuzzy search history...",
+		"newest": "Newest",
+		"oldest": "Oldest",
+		"mostExpensive": "Most Expensive",
+		"mostTokens": "Most Tokens",
+		"mostRelevant": "Most Relevant"
+	},
+	"input": {
+		"autoApprove": "Auto-Approve:",
+		"autoApproveDesc": "Auto-approve allows Roo Code to perform actions without asking for permission. Only enable for actions you fully trust.",
+		"Read": "Read files and directories",
+		"ReadDesc": "Allows access to read any file on your computer.",
+		"Edit": "Edit files",
+		"EditDesc": "Allows modification of any files on your computer.",
+		"Commands": "Execute approved commands",
+		"CommandsDesc": "Allows execution of approved terminal commands. You can configure this in the settings panel.",
+		"Browser": "Use the browser",
+		"BrowserDesc": "Allows ability to launch and interact with any website in a headless browser.",
+		"MCP": "Use MCP servers",
+		"MCPDesc": "Allows use of configured MCP servers which may modify filesystem or interact with APIs.",
+		"Modes": "Switch modes & create tasks",
+		"ModesDesc": "Allows automatic switching between different AI modes and creating new tasks without requiring approval.",
+		"Retries": "Retry failed requests",
+		"RetriesDesc": "Automatically retry failed API requests when the provider returns an error response."
 	}
 }

@@ -44,7 +44,7 @@
 		"retryDelay": "重试延迟",
 		"retryDelayDesc": "重试请求前的延迟时间",
 		"alwaysApproveMcp": "始终批准MCP工具",
-		"alwaysApproveMcpDesc": "在MCP服务器视图中启用单个MCP工具的自动批准（需要此设置和工具的单独'始终允许'复选框）",
+		"alwaysApproveMcpDesc": "在MCP服务器视图中启用单个MCP工具的自动批准（需要同时启用此设置和工具的单独'始终允许'复选框）",
 		"alwaysApproveMode": "始终批准模式切换和任务创建",
 		"alwaysApproveModeDesc": "自动切换不同的AI模式并创建新任务，无需批准",
 		"alwaysApproveExecute": "始终批准允许的执行操作",
@@ -96,5 +96,53 @@
 	},
 	"provider": {
 		"keyprivacy": "此密钥存储在本地，仅用于从此扩展发起API请求。"
+	},
+	"mcp": {
+		"servers": "MCP 服务器",
+		"enableServerCreation": "启用 MCP 服务器创建",
+		"enableServerCreationDesc": "启用后，Roo 可以通过'添加新工具到...'等命令帮助您创建新的 MCP 服务器。如果您不需要创建 MCP 服务器，可以禁用此功能以减少 Roo 的令牌使用量。",
+		"tools": "工具",
+		"resources": "资源",
+		"networkTimeout": "网络超时",
+		"restartServer": "重启服务器",
+		"restarting": "正在重启...",
+		"retryConnection": "重试连接",
+		"retrying": "正在重试...",
+		"noToolsFound": "未找到工具",
+		"noResourcesFound": "未找到资源",
+		"maxTimeoutDesc": "等待服务器响应的最长时间",
+		"editSettings": "编辑 MCP 设置",
+		"description1": " ",
+		"description2": "模型上下文协议",
+		"description3": "可以与本地运行的MCP服务器通信，这些服务器提供额外的工具和资源来扩展Roo的功能。您可以使用",
+		"description4": "社区制作的服务器",
+		"description5": "或者要求Roo创建适合您工作流程的新工具（例如：'添加一个获取最新npm文档的工具'）"
+	},
+	"history": {
+		"title": "历史记录",
+		"search": "模糊搜索历史...",
+		"newest": "最新",
+		"oldest": "最早",
+		"mostExpensive": "最耗费",
+		"mostTokens": "最多令牌",
+		"mostRelevant": "最相关"
+	},
+	"input": {
+		"autoApprove": "自动批准：",
+		"autoApproveDesc": "自动批准允许 Roo Code Besiege 在不请求许可的情况下执行操作。仅对您完全信任的操作启用。",
+		"Read": "读取文件和目录",
+		"ReadDesc": "允许访问并读取您计算机上的任何文件。",
+		"Edit": "编辑文件",
+		"EditDesc": "允许修改您计算机上的任何文件。",
+		"Commands": "执行已批准的命令",
+		"CommandsDesc": "允许执行已批准的终端命令。您可以在设置面板中配置此项。",
+		"Browser": "使用浏览器",
+		"BrowserDesc": "允许在无头浏览器中启动并与任何网站交互。",
+		"MCP": "使用 MCP 服务器",
+		"MCPDesc": "允许使用已配置的 MCP 服务器，这些服务器可能会修改文件系统或与 API 交互。",
+		"Modes": "切换模式和创建任务",
+		"ModesDesc": "允许在不需要批准的情况下自动切换不同的 AI 模式并创建新任务。",
+		"Retries": "重试失败的请求",
+		"RetriesDesc": "当提供商返回错误响应时自动重试失败的 API 请求。"
 	}
 }

@@ -963,9 +963,9 @@ export function getOpenRouterAuthUrl(uriScheme?: string) {
 }
 
 export const formatPrice = (price: number) => {
-	return new Intl.NumberFormat("en-US", {
+	return new Intl.NumberFormat("zh-CN", {
 		style: "currency",
-		currency: "YUN",
+		currency: "CNY",
 		minimumFractionDigits: 2,
 		maximumFractionDigits: 2,
 	}).format(price)

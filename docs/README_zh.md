@@ -12,7 +12,7 @@
 
 <div align="center">
 
-[English](./docs/README_en.md) | [Français](./docs/README_fr.md) | [Deutsch](./docs/README_de.md) | [Eesti](./docs/README_et.md) | [Русский](./docs/README_ru.md) | 简体中文
+[English](./README_en.md) | [Français](./README_fr.md) | [Deutsch](./README_de.md) | [Eesti](./README_et.md) | [Русский](./README_ru.md) | 简体中文
 
 </div>
 

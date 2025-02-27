@@ -95,6 +95,22 @@
 		"clearChat": "Effacer le chat"
 	},
 	"provider": {
-		"keyprivacy": "Cette clé est stockée localement et n'est utilisée que pour les requêtes API depuis cette extension."
+		"keyPrivacy": "Cette clé est stockée localement et n'est utilisée que pour les requêtes API depuis cette extension."
+	},
+	"mcp": {
+		"servers": "Serveurs MCP",
+		"enableServerCreation": "Activer la création de serveur MCP",
+		"enableServerCreationDesc": "Lorsqu'activé, Roo peut vous aider à créer de nouveaux serveurs MCP via des commandes comme \"ajouter un nouvel outil à...\". Si vous n'avez pas besoin de créer des serveurs MCP, vous pouvez désactiver ceci pour réduire l'utilisation des jetons de Roo.",
+		"tools": "Outils",
+		"resources": "Ressources",
+		"networkTimeout": "Délai réseau",
+		"restartServer": "Redémarrer le serveur",
+		"restarting": "Redémarrage...",
+		"retryConnection": "Réessayer la connexion",
+		"retrying": "Nouvelle tentative...",
+		"noToolsFound": "Aucun outil trouvé",
+		"noResourcesFound": "Aucune ressource trouvée",
+		"maxTimeoutDesc": "Temps maximum d'attente pour les réponses du serveur",
+		"editSettings": "Modifier les paramètres MCP"
 	}
 }

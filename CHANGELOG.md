@@ -10,3 +10,7 @@
     - add france, estonia, germany, chinese, russian language support (part of)
     - add provider tencent cloud
     = del some unused code
+## 0.0.4 2025-2-27
+    - translate more text(not all)
+    - modify cost from dollar to yuan
+    - del some unused code
